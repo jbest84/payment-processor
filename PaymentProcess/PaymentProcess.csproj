@@ -53,6 +53,9 @@
     <Compile Include="TaxItem.cs" />
     <Compile Include="TransactionInfo.cs" />
     <Compile Include="Utils.cs" />
+    <Compile Include="XBankAccountTypes.cs" />
+    <Compile Include="XEcheckTypes.cs" />
+    <Compile Include="XTypes.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="LICENSE.txt" />
