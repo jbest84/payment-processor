@@ -244,7 +244,7 @@ namespace PaymentProcess
         public string GetReasonNote(int reasonCode)
         {
             ResponseReason reason = this.FindMatch(reasonCode);
-            return reason.IsEmpty ? null : reason.notes;
+            return reason.IsEmpty ? null : reason.Notes;
         }
 
         /// <summary>
@@ -255,7 +255,7 @@ namespace PaymentProcess
         public string GetReasonText(int reasonCode)
         {
             ResponseReason reason = this.FindMatch(reasonCode);
-            return reason.IsEmpty ? null : reason.responseReasonText;
+            return reason.IsEmpty ? null : reason.ResponseReasonText;
         }
 
         /// <summary>
@@ -267,7 +267,7 @@ namespace PaymentProcess
         {
             foreach (ResponseReason reason in this.reasons)
             {
-                if (reason.responseReasonCode == reasonCode)
+                if (reason.ResponseReasonCode == reasonCode)
                 {
                     return reason;
                 }
