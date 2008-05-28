@@ -92,7 +92,7 @@ namespace PaymentProcess
             this.X_Recurring_Billing = "FALSE";
             this.abaCode = aba_code;
             this.acctNum = acct_num;
-            this.echeckType = X_echeck_types.WEB;
+            this.echeckType = XEcheckTypes.WEB;
             this.acctType = acct_type;
             this.bankName = bank_name;
             this.acctName = acct_name;
@@ -187,7 +187,7 @@ namespace PaymentProcess
                 sb.Append("&x_bank_acct_name=" + this.acctName);
             }
 
-            sb.Append("&x_echeck_type=" + X_echeck_types.WEB);
+            sb.Append("&x_echeck_type=" + XEcheckTypes.WEB);
 
             return sb.ToString();
         }
