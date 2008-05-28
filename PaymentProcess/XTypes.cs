@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------
-// <copyright file="Utils.cs" company="Mission3, Inc.">
+// <copyright file="XTypes.cs" company="Mission3, Inc.">
 //      Copyright (c) Mission3, Inc. All rights reserved.
 //
 //      Permission is hereby granted, free of charge, to any person
@@ -30,91 +30,80 @@ namespace PaymentProcess
     using System;
     using System.Collections.Generic;
     using System.Text;
-    using System.Diagnostics;
 
     /// <summary>
-    /// Response code
+    /// Transaction types
     /// </summary>
-    public enum ResponseCode
+    public class XTypes
     {
         /// <summary>
-        /// Approved response
+        /// Auth capture type - Default
         /// </summary>
-        Approved = 1,
+        private static string authCapture = "AUTH_CAPTURE";
 
         /// <summary>
-        /// Declined response
+        /// Auth only type
         /// </summary>
-        Declined = 2,
+        private static string authOnly = "AUTH_ONLY";
 
         /// <summary>
-        /// Error response
+        /// Capture only type
         /// </summary>
-        Error = 3,
+        private static string captureOnly = "CAPTURE_ONLY";
 
         /// <summary>
-        /// Held for review response
+        /// Credit type
         /// </summary>
-        HeldForReview = 4,
-    }
-
-    /// <summary>
-    /// Response reason
-    /// </summary>
-    public struct ResponseReason
-    {
+        private static string credit = "CREDIT";
+        
         /// <summary>
-        /// Response code
+        /// Prior type
         /// </summary>
-        public int ResponseCode;
+        private static string prior = "PRIOR_";
 
         /// <summary>
-        /// Response reason code
+        /// Void transaction type
         /// </summary>
-        public int ResponseReasonCode;
+        private static string vvoid = "VOID";
 
         /// <summary>
-        /// Response reason text
+        /// Gets the auth capture type
         /// </summary>
-        public string ResponseReasonText;
-
-        /// <summary>
-        /// Response notes
-        /// </summary>
-        public string Notes;
-
-        /// <summary>
-        /// Empty indicator
-        /// </summary>
-        public bool IsEmpty;
-
-        /// <summary>
-        /// ResponseReason struct CTor
-        /// </summary>
-        /// <param name="response_code">Response code</param>
-        /// <param name="reasonCode">Response reason code</param>
-        /// <param name="reasonText">Response reason text</param>
-        /// <param name="notes_">Response notes</param>
-        public ResponseReason(int response_code, int reasonCode, string reasonText, string notes_)
+        public static string AUTH_CAPTURE
         {
-            this.ResponseCode = response_code;
-            this.ResponseReasonCode = reasonCode;
-            this.ResponseReasonText = reasonText;
-            this.Notes = notes_;
-            this.IsEmpty = false;
+            get { return authCapture; }
         }
 
         /// <summary>
-        /// ResponseReason struct CTor
+        /// Gets the auth only type
         /// </summary>
-        /// <param name="empty">Indicates that this response is empty</param>
-        public ResponseReason(bool empty)
+        public static string AUTH_ONLY
         {
-            this.ResponseCode = 0;
-            this.ResponseReasonCode = 0;
-            this.ResponseReasonText = null;
-            this.Notes = null;
-            this.IsEmpty = empty;
+            get { return authOnly; }
+        }
+
+        /// <summary>
+        /// Gets the capture only type
+        /// </summary>
+        public static string CAPTURE_ONLY
+        {
+            get { return captureOnly; }
+        }
+
+        /// <summary>
+        /// Gets the credit type
+        /// </summary>
+        public static string CREDIT
+        {
+            get { return credit; }
+        }
+
+        /// <summary>
+        /// Gets the prior type
+        /// </summary>
+        public static string PRIOR
+        {
+            get { return prior; }
         }
     }
 }
