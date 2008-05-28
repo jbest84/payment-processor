@@ -1,62 +1,89 @@
-/*
-Copyright (c) 2008 Mission3, INC (jbest@mission3.com)
-
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
-*/
-
-using System;
-using System.Collections.Generic;
-using System.Text;
+//-----------------------------------------------------------------------
+// <copyright file="OrderInfo.cs" company="Mission3, Inc.">
+//      Copyright (c) Mission3, Inc. All rights reserved.
+//
+//      Permission is hereby granted, free of charge, to any person
+//      obtaining a copy of this software and associated documentation
+//      files (the "Software"), to deal in the Software without
+//      restriction, including without limitation the rights to use,
+//      copy, modify, merge, publish, distribute, sublicense, and/or sell
+//      copies of the Software, and to permit persons to whom the
+//      Software is furnished to do so, subject to the following
+//      conditions:
+//
+//      The above copyright notice and this permission notice shall be
+//      included in all copies or substantial portions of the Software.
+//
+//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+//      OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+//      HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+//      WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+//      FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+//      OTHER DEALINGS IN THE SOFTWARE.
+// </copyright>
+//-----------------------------------------------------------------------
 
 namespace PaymentProcess
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
+    /// <summary>
+    /// Order information
+    /// </summary>
     public class OrderInfo
     {
-        private string _x_invoice_num = "";
-        private string _x_description = "";
+        /// <summary>
+        /// Order invoice number
+        /// </summary>
+        private string invoiceNum = "";
 
+        /// <summary>
+        /// Order description
+        /// </summary>
+        private string description = "";
+
+        /// <summary>
+        /// OrderInfo CTor
+        /// </summary>
+        /// <param name="invoice_number">Order invoice number</param>
+        /// <param name="description">Order description</param>
         public OrderInfo(string invoice_number, string description)
         {
-            _x_invoice_num = invoice_number;
-            _x_description = description;
+            this.invoiceNum = invoice_number;
+            this.description = description;
         }
 
-        public string x_invoice_num
+        /// <summary>
+        /// Gets or sets the order invoice number
+        /// </summary>
+        public string X_Invoice_Num
         {
-            get { return _x_invoice_num; }
-            set{_x_invoice_num = value;}
+            get { return this.invoiceNum; }
+            set { this.invoiceNum = value; }
         }
 
-        public string x_description
+        /// <summary>
+        /// Gets or sets the order description
+        /// </summary>
+        public string X_Description
         {
-            get { return _x_description; }
-            set { _x_description = value; }
+            get { return this.description; }
+            set { this.description = value; }
         }
 
+        /// <summary>
+        /// Builds the HTTP POST string for AuthorizeRequest
+        /// </summary>
+        /// <returns>see summary</returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("&x_invoice_num=" + _x_invoice_num);
-            sb.Append("&x_description=" + _x_description);
+            sb.Append("&x_invoice_num=" + this.invoiceNum);
+            sb.Append("&x_description=" + this.description);
 
             return sb.ToString();
         }

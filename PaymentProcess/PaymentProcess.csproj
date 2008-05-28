@@ -36,6 +36,7 @@
     <Compile Include="AdditionalShippingInfo.cs" />
     <Compile Include="AuthorizeRequest.cs" />
     <Compile Include="AuthorizeResponse.cs" />
+    <Compile Include="AuthorizeURL.cs" />
     <Compile Include="BankTransactionInfo.cs" />
     <Compile Include="CreditTransactionInfo.cs" />
     <Compile Include="CustomerInfo.cs" />
