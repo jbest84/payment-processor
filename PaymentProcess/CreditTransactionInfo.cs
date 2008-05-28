@@ -1,147 +1,263 @@
-/*
-Copyright (c) 2008 Mission3, INC (jbest@mission3.com)
-
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
-*/
-
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Diagnostics;
+//-----------------------------------------------------------------------
+// <copyright file="CreditTransactionInfo.cs" company="Mission3, Inc.">
+//      Copyright (c) Mission3, Inc. All rights reserved.
+//
+//      Permission is hereby granted, free of charge, to any person
+//      obtaining a copy of this software and associated documentation
+//      files (the "Software"), to deal in the Software without
+//      restriction, including without limitation the rights to use,
+//      copy, modify, merge, publish, distribute, sublicense, and/or sell
+//      copies of the Software, and to permit persons to whom the
+//      Software is furnished to do so, subject to the following
+//      conditions:
+//
+//      The above copyright notice and this permission notice shall be
+//      included in all copies or substantial portions of the Software.
+//
+//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+//      OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+//      HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+//      WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+//      FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+//      OTHER DEALINGS IN THE SOFTWARE.
+// </copyright>
+//-----------------------------------------------------------------------
 
 namespace PaymentProcess
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using System.Diagnostics;
+
+    /// <summary>
+    /// Holds credit card transaction information
+    /// </summary>
     public class CreditTransactionInfo : TransactionInfo
     {
+        /// <summary>
+        /// TraceSwitch PaymentProcess
+        /// </summary>
         private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
 
-        //required
-        private string _version, _card_num, _exp_date, _trans_id, __type, _auth_code;
-        private decimal _amount = 0;
+        #region Required
+        /// <summary>
+        /// API version
+        /// </summary>
+        private string version;
 
-        //Optional
-        private string _method, _recurring_billing, _card_code, _test_request;
-        int _duplicate_window = 120;
+        /// <summary>
+        /// Credit card number
+        /// </summary>
+        private string cardNum;
 
-        public CreditTransactionInfo(
-            string version, decimal amount,
-            string card_num, string exp_date,
-            string trans_id, string _type,
-            string auth_code):base(version, amount, "CC")
+        /// <summary>
+        /// Credit card expiration date
+        /// </summary>
+        private string expDate;
+
+        /// <summary>
+        /// Transaction ID
+        /// </summary>
+        private string transId;
+
+        /// <summary>
+        /// Transaction type
+        /// </summary>
+        private string ttype;
+
+        /// <summary>
+        /// Authorization code
+        /// </summary>
+        private string authCode;
+
+        /// <summary>
+        /// Transaction amount
+        /// </summary>
+        private decimal amount = 0;
+        #endregion
+
+        #region Optional
+        /// <summary>
+        /// Transaction method
+        /// </summary>
+        private string method;
+
+        /// <summary>
+        /// Recurring billing
+        /// </summary>
+        private string recurringBilling;
+
+        /// <summary>
+        /// Credit card code
+        /// </summary>
+        private string cardCode;
+
+        /// <summary>
+        /// Test request
+        /// </summary>
+        private string testRequest;
+
+        /// <summary>
+        /// Dupiclate window
+        /// </summary>
+        private int duplicateWindow = 120;
+        #endregion
+
+        /// <summary>
+        /// CreditTransactionInfo CTor
+        /// </summary>
+        /// <param name="version">API version</param>
+        /// <param name="amount">amount for this transaction</param>
+        /// <param name="card_num">credit card number</param>
+        /// <param name="exp_date">credit card expiration date</param>
+        /// <param name="trans_id">transaction id</param>
+        /// <param name="ttype">transaction type</param>
+        /// <param name="auth_code">authorization code</param>
+        public CreditTransactionInfo(string version, decimal amount, string card_num, string exp_date, string trans_id, string ttype, string auth_code) : base(version, amount, "CC")
         {
-            Trace.WriteLineIf(ts.TraceInfo, "CreditTransactionInfo CTor");
-            _version = version;
-            _amount = amount;
-            _card_num = card_num;
-            _exp_date = exp_date;
-            _trans_id = trans_id;//conditional
-            __type = _type;
-            _auth_code = auth_code;//conditional
+            Trace.WriteLineIf(this.ts.TraceInfo, "CreditTransactionInfo CTor");
+            this.version = version;
+            this.amount = amount;
+            this.cardNum = card_num;
+            this.expDate = exp_date;
 
-            _method = "CC";
-            _recurring_billing = "FALSE";
-            _card_code = "";
-            _test_request = "TRUE";
+            // Conditional
+            this.transId = trans_id;
+            this.ttype = ttype;
+
+            // Conditional
+            this.authCode = auth_code;
+
+            this.method = "CC";
+            this.recurringBilling = "FALSE";
+            this.cardCode = "";
+            this.testRequest = "TRUE";
         }
 
         #region Properties
 
-        public string x_version
+        /// <summary>
+        /// Gets or sets the API version number
+        /// </summary>
+        public string X_Version
         {
-            get { return _version; }
-            set { _version = value; }
+            get { return this.version; }
+            set { this.version = value; }
         }
 
-        public decimal x_amount
+        /// <summary>
+        /// Gets or sets the transaction amount
+        /// </summary>
+        public decimal X_Amount
         {
-            get { return _amount; }
-            set { _amount = value; }
+            get { return this.amount; }
+            set { this.amount = value; }
         }
 
-        public string x_type
+        /// <summary>
+        /// Gets or sets the transaction type
+        /// </summary>
+        public string X_Type
         {
-            get { return __type; }
-            set { __type = value; }
+            get { return this.ttype; }
+            set { this.ttype = value; }
         }
 
-        public string x_method
+        /// <summary>
+        /// Gets or sets the method
+        /// </summary>
+        public string X_Method
         {
-            get { return _method; }
-            set { _method = value; }
+            get { return this.method; }
+            set { this.method = value; }
         }
 
-        public string x_recurring_billing
+        /// <summary>
+        /// Gets or sets recurring billing
+        /// </summary>
+        public string X_Recurring_Billing
         {
-            get { return _recurring_billing; }
-            set { _recurring_billing = value; }
+            get { return this.recurringBilling; }
+            set { this.recurringBilling = value; }
         }
 
-        public string x_card_num
+        /// <summary>
+        /// Gets or sets credit card number
+        /// </summary>
+        public string X_Card_Num
         {
-            get { return _card_num; }
-            set { _card_num = value; }
+            get { return this.cardNum; }
+            set { this.cardNum = value; }
         }
 
-        public string x_exp_date
+        /// <summary>
+        /// Gets or sets expiration date
+        /// </summary>
+        public string X_Exp_Date
         {
-            get { return _exp_date; }
-            set { _exp_date = value; }
+            get { return this.expDate; }
+            set { this.expDate = value; }
         }
 
-        public string x_card_code
+        /// <summary>
+        /// Gets or sets card code
+        /// </summary>
+        public string X_Card_Code
         {
-            get { return _card_code; }
-            set { _card_code = value; }
+            get { return this.cardCode; }
+            set { this.cardCode = value; }
         }
 
-        public string x_trans_id
+        /// <summary>
+        /// Gets or sets transaction ID
+        /// </summary>
+        public string X_Trans_Id
         {
-            get { return _trans_id; }
-            set { _trans_id = value; }
+            get { return this.transId; }
+            set { this.transId = value; }
         }
 
-        public string x_auth_code
+        /// <summary>
+        /// Gets or sets authorization code
+        /// </summary>
+        public string X_Auth_Code
         {
-            get { return _auth_code; }
-            set { _auth_code = value; }
+            get { return this.authCode; }
+            set { this.authCode = value; }
         }
 
         #endregion
 
+        /// <summary>
+        /// Builds the POST string for the AuthorizeRequest
+        /// </summary>
+        /// <returns>see summary</returns>
         public override string ToString()
         {
-            Trace.WriteLineIf(ts.TraceInfo, "CreditTransactionInfo ToString");
+            Trace.WriteLineIf(this.ts.TraceInfo, "CreditTransactionInfo ToString");
             StringBuilder sb = new StringBuilder();
             sb.Append(base.ToString());
-            sb.Append("&x_type=" + __type);
-            sb.Append("&x_card_num=" + _card_num);
-            sb.Append("&x_exp_date=" + _exp_date);
+            sb.Append("&x_type=" + this.ttype);
+            sb.Append("&x_card_num=" + this.cardNum);
+            sb.Append("&x_exp_date=" + this.expDate);
 
-            if (!String.IsNullOrEmpty(_card_code))
-                sb.Append("&x_card_code=" + _card_code);
-            if (!String.IsNullOrEmpty(_trans_id))
-                sb.Append("&x_trans_id=" + _trans_id);
-            if (!String.IsNullOrEmpty(_auth_code))
-                sb.Append("&x_auth_code=" + _auth_code);
+            if (!String.IsNullOrEmpty(this.cardCode))
+            {
+                sb.Append("&x_card_code=" + this.cardCode);
+            }
+
+            if (!String.IsNullOrEmpty(this.transId))
+            {
+                sb.Append("&x_trans_id=" + this.transId);
+            }
+
+            if (!String.IsNullOrEmpty(this.authCode))
+            {
+                sb.Append("&x_auth_code=" + this.authCode);
+            }
 
             return sb.ToString();
         }

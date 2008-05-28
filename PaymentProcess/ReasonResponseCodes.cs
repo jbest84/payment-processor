@@ -1,41 +1,52 @@
-/*
-Copyright (c) 2008 Mission3, INC (jbest@mission3.com)
-
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
-*/
-
-using System;
-using System.Collections.Generic;
-using System.Text;
+//-----------------------------------------------------------------------
+// <copyright file="ReasonResponseCodes.cs" company="Mission3, Inc.">
+//      Copyright (c) Mission3, Inc. All rights reserved.
+//
+//      Permission is hereby granted, free of charge, to any person
+//      obtaining a copy of this software and associated documentation
+//      files (the "Software"), to deal in the Software without
+//      restriction, including without limitation the rights to use,
+//      copy, modify, merge, publish, distribute, sublicense, and/or sell
+//      copies of the Software, and to permit persons to whom the
+//      Software is furnished to do so, subject to the following
+//      conditions:
+//
+//      The above copyright notice and this permission notice shall be
+//      included in all copies or substantial portions of the Software.
+//
+//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+//      OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+//      HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+//      WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+//      FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+//      OTHER DEALINGS IN THE SOFTWARE.
+// </copyright>
+//-----------------------------------------------------------------------
 
 namespace PaymentProcess
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
+    /// <summary>
+    /// Reason response codes for authorize.NET responses
+    /// </summary>
     public class ReasonResponseCodes
     {
-        List<ResponseReason> reasons;
+        /// <summary>
+        /// List of all the possible response reason
+        /// </summary>
+        private List<ResponseReason> reasons;
 
+        /// <summary>
+        /// ReasonResponseCodes CTor
+        /// </summary>
         public ReasonResponseCodes()
         {
-            reasons = new List<ResponseReason>();
+            List<ResponseReason> reasons = new List<ResponseReason>();
             reasons.Add(new ResponseReason(1, 1, "This transaction has been approved.", ""));
             reasons.Add(new ResponseReason(2, 2, "This transaction has been declined.", ""));
             reasons.Add(new ResponseReason(2, 3, "This transaction has been declined.", ""));
@@ -222,27 +233,46 @@ namespace PaymentProcess
             reasons.Add(new ResponseReason(3, 261, "An error occurred during processing. Please try again.", "The transaction experienced an error during sensitive data encryption and was not processed. Please try again."));
             reasons.Add(new ResponseReason(3, 270, "The line item [item number] is invalid.", "A value submitted in x_line_item for the item referenced is invalid."));
             reasons.Add(new ResponseReason(3, 271, "The number of line items submitted is not allowed. A maximum of 30 line items can be submitted.", "The number of line items submitted exceeds the allowed maximum of 30."));
+            this.reasons = reasons;
         }
 
+        /// <summary>
+        /// Gets the notes for a given reason code
+        /// </summary>
+        /// <param name="reasonCode">Response reason code to lookup</param>
+        /// <returns>Notes string for the given reason code</returns>
         public string GetReasonNote(int reasonCode)
         {
-            ResponseReason reason = FindMatch(reasonCode);
+            ResponseReason reason = this.FindMatch(reasonCode);
             return reason.IsEmpty ? null : reason.notes;
         }
 
+        /// <summary>
+        /// Gets the reason text for a given reason code
+        /// </summary>
+        /// <param name="reasonCode">Response reason code to lookup</param>
+        /// <returns>Reason text for the given reason code</returns>
         public string GetReasonText(int reasonCode)
         {
-            ResponseReason reason = FindMatch(reasonCode);
+            ResponseReason reason = this.FindMatch(reasonCode);
             return reason.IsEmpty ? null : reason.responseReasonText;
         }
 
+        /// <summary>
+        /// Finds the response reason for a given code
+        /// </summary>
+        /// <param name="reasonCode">Response reason code to lookup</param>
+        /// <returns>ResponseReason in the list of reasons</returns>
         private ResponseReason FindMatch(int reasonCode)
         {
-            foreach (ResponseReason reason in reasons)
+            foreach (ResponseReason reason in this.reasons)
             {
                 if (reason.responseReasonCode == reasonCode)
+                {
                     return reason;
+                }
             }
+
             return new ResponseReason(true);
         }
     }

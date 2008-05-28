@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------
-// <copyright file="ItemizedOrderInfo.cs" company="Mission3, Inc.">
+// <copyright file="AuthorizeURL.cs" company="Mission3, Inc.">
 //      Copyright (c) Mission3, Inc. All rights reserved.
 //
 //      Permission is hereby granted, free of charge, to any person
@@ -32,46 +32,34 @@ namespace PaymentProcess
     using System.Text;
 
     /// <summary>
-    /// Itemized order information
+    /// Holds URL information
     /// </summary>
-    public class ItemizedOrderInfo
+    public class AuthorizeURL
     {
         /// <summary>
-        /// List of line items
+        /// Test URL to send HTTP POST requests
         /// </summary>
-        private List<LineItem> lineItems;
+        private static string testUrl = "https://test.authorize.net/gateway/transact.dll";
 
         /// <summary>
-        /// ItemizedOrderInfo CTor
+        /// Production URL to send HTTP POST requests
         /// </summary>
-        /// <param name="lineItems">List collection of LineItems</param>
-        public ItemizedOrderInfo(List<LineItem> lineItems)
+        private static string productionUrl = "https://secure.authorize.net/gateway/transact.dll";
+
+        /// <summary>
+        /// Gets the TEST URL
+        /// </summary>
+        public static string TEST_URL
         {
-            this.lineItems = lineItems;
+            get { return testUrl; }
         }
 
         /// <summary>
-        /// Gets or sets a list of line items
+        /// Gets the PRODUCTION URL
         /// </summary>
-        public List<LineItem> LineItems
+        public static string PRODUCTION_URL
         {
-            get { return this.lineItems; }
-            set { this.lineItems = value; }
-        }
-
-        /// <summary>
-        /// Builds the POST string for AuthorizeRequest
-        /// </summary>
-        /// <returns>Delimited string for HTTP POST</returns>
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (LineItem li in this.lineItems)
-            {
-                sb.Append("&x_line_item=" + li.ToString());
-            }
-
-            return sb.ToString();
+            get { return productionUrl; }
         }
     }
 }

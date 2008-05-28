@@ -1,175 +1,276 @@
-/*
-Copyright (c) 2008 Mission3, INC (jbest@mission3.com)
-
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
-*/
-
-using System;
-using System.Collections.Generic;
-using System.Text;
+//-----------------------------------------------------------------------
+// <copyright file="CustomerInfo.cs" company="Mission3, Inc.">
+//      Copyright (c) Mission3, Inc. All rights reserved.
+//
+//      Permission is hereby granted, free of charge, to any person
+//      obtaining a copy of this software and associated documentation
+//      files (the "Software"), to deal in the Software without
+//      restriction, including without limitation the rights to use,
+//      copy, modify, merge, publish, distribute, sublicense, and/or sell
+//      copies of the Software, and to permit persons to whom the
+//      Software is furnished to do so, subject to the following
+//      conditions:
+//
+//      The above copyright notice and this permission notice shall be
+//      included in all copies or substantial portions of the Software.
+//
+//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+//      OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+//      HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+//      WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+//      FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+//      OTHER DEALINGS IN THE SOFTWARE.
+// </copyright>
+//-----------------------------------------------------------------------
 
 namespace PaymentProcess
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
+    /// <summary>
+    /// Holds customer information for AuthorizeRequest
+    /// </summary>
     public class CustomerInfo
     {
-        private string _first_name;
+        /// <summary>
+        /// Customer first name
+        /// </summary>
+        private string firstName;
 
-        public string x_first_name
+        /// <summary>
+        /// Customer last name
+        /// </summary>
+        private string lastName;
+
+        /// <summary>
+        /// Customer company
+        /// </summary>
+        private string company;
+
+        /// <summary>
+        /// Customer address
+        /// </summary>
+        private string address;
+
+        /// <summary>
+        /// Customer city
+        /// </summary>
+        private string city;
+
+        /// <summary>
+        /// Customer state
+        /// </summary>
+        private string state;
+
+        /// <summary>
+        /// Customer zip code
+        /// </summary>
+        private string zip;
+
+        /// <summary>
+        /// Customer country
+        /// </summary>
+        private string country;
+
+        /// <summary>
+        /// Customer phone number
+        /// </summary>
+        private string phone;
+
+        /// <summary>
+        /// Customer fax number
+        /// </summary>
+        private string fax;
+
+        /// <summary>
+        /// Customer email address
+        /// </summary>
+        private string email;
+
+        /// <summary>
+        /// Customer ID
+        /// </summary>
+        private string customerId;
+
+        /// <summary>
+        /// Customer IP address
+        /// </summary>
+        private string customerIp;
+
+        /// <summary>
+        /// CustomerInfo CTor
+        /// </summary>
+        /// <param name="first_name">Customer first name</param>
+        /// <param name="last_name">Customer last name</param>
+        /// <param name="company">Customer company</param>
+        /// <param name="address">Customer address</param>
+        /// <param name="city">Customer city</param>
+        /// <param name="state">Customer state</param>
+        /// <param name="zip">Customer zipcode</param>
+        /// <param name="country">Customer country</param>
+        /// <param name="phone">Customer phone</param>
+        /// <param name="fax">Customer fax</param>
+        /// <param name="email">Customer email</param>
+        /// <param name="customer_id">Customer ID</param>
+        /// <param name="customer_ip">Customer IP address</param>
+        public CustomerInfo(string first_name, string last_name, string company, string address, string city, string state, string zip, string country, string phone, string fax, string email, string customer_id, string customer_ip)
         {
-            get { return _first_name; }
-            set { _first_name = value; }
+            this.firstName = first_name;
+            this.lastName = last_name;
+            this.company = company;
+            this.address = address;
+            this.city = city;
+            this.state = state;
+            this.zip = zip;
+            this.country = country;
+            this.phone = phone;
+            this.fax = fax;
+            this.email = email;
+            this.customerId = customer_id;
+            this.customerIp = customer_ip;
         }
 
-        private string _last_name;
-
-        public string x_last_name
+        /// <summary>
+        /// Gets or sets the customer first name
+        /// </summary>
+        public string X_First_Name
         {
-            get { return _last_name; }
-            set { _last_name = value; }
+            get { return this.firstName; }
+            set { this.firstName = value; }
         }
 
-        private string _company;
-
-        public string x_company
+        /// <summary>
+        /// Gets or sets the customer last name
+        /// </summary>
+        public string X_Last_Name
         {
-            get { return _company; }
-            set { _company = value; }
+            get { return this.lastName; }
+            set { this.lastName = value; }
         }
 
-        private string _address;
-
-        public string x_address
+        /// <summary>
+        /// Gets or sets the company name
+        /// </summary>
+        public string X_Company
         {
-            get { return _address; }
-            set { _address = value; }
+            get { return this.company; }
+            set { this.company = value; }
         }
 
-        private string _city;
-
-        public string x_city
+        /// <summary>
+        /// Gets or sets the customer address
+        /// </summary>
+        public string X_Address
         {
-            get { return _city; }
-            set { _city = value; }
+            get { return this.address; }
+            set { this.address = value; }
         }
 
-        private string _state;
-
-        public string x_state
+        /// <summary>
+        /// Gets or sets the customer city
+        /// </summary>
+        public string X_City
         {
-            get { return _state; }
-            set { _state = value; }
+            get { return this.city; }
+            set { this.city = value; }
         }
 
-        private string _zip;
-
-        public string x_zip
+        /// <summary>
+        /// Gets or sets the customer state
+        /// </summary>
+        public string X_State
         {
-            get { return _zip; }
-            set { _zip = value; }
+            get { return this.state; }
+            set { this.state = value; }
         }
 
-        private string _country;
-
-        public string x_country
+        /// <summary>
+        /// Gets or sets the customer zip code
+        /// </summary>
+        public string X_Zip
         {
-            get { return _country; }
-            set { _country = value; }
+            get { return this.zip; }
+            set { this.zip = value; }
         }
 
-        private string _phone;
-
-        public string x_phone
+        /// <summary>
+        /// Gets or sets the customer country
+        /// </summary>
+        public string X_Country
         {
-            get { return _phone; }
-            set { _phone = value; }
+            get { return this.country; }
+            set { this.country = value; }
         }
 
-        private string _fax;
-
-        public string x_fax
+        /// <summary>
+        /// Gets or sets the customer phone number
+        /// </summary>
+        public string X_Phone
         {
-            get { return _fax; }
-            set { _fax = value; }
+            get { return this.phone; }
+            set { this.phone = value; }
         }
 
-        private string _email;
-
-        public string x_email
+        /// <summary>
+        /// Gets or sets the customer fax number
+        /// </summary>
+        public string X_Fax
         {
-            get { return _email; }
-            set { _email = value; }
+            get { return this.fax; }
+            set { this.fax = value; }
         }
 
-        private string _customer_id;
-
-        public string x_cust_id
+        /// <summary>
+        /// Gets or sets the customer email address
+        /// </summary>
+        public string X_Email
         {
-            get { return _customer_id; }
-            set { _customer_id = value; }
+            get { return this.email; }
+            set { this.email = value; }
         }
 
-        private string _customer_ip;
-
-        public string x_customer_ip
+        /// <summary>
+        /// Gets or sets the customer ID
+        /// </summary>
+        public string X_Cust_Id
         {
-            get { return _customer_ip; }
-            set { _customer_ip = value; }
+            get { return this.customerId; }
+            set { this.customerId = value; }
         }
 
-        public CustomerInfo(string first_name, string last_name, string company, string address,
-            string city, string state, string zip, string country, string phone, string fax,
-            string email, string customer_id, string customer_ip)
+        /// <summary>
+        /// Gets or sets the customer IP address
+        /// </summary>
+        public string X_Customer_Ip
         {
-            _first_name = first_name;
-            _last_name = last_name;
-            _company = company;
-            _address = address;
-            _city = city;
-            _state = state;
-            _zip = zip;
-            _country = country;
-            _phone = phone;
-            _fax = fax;
-            _email = email;
-            _customer_id = customer_id;
-            _customer_ip = customer_ip;
+            get { return this.customerIp; }
+            set { this.customerIp = value; }
         }
 
+        /// <summary>
+        /// Builds the POST string for the AuthorizeRequest
+        /// </summary>
+        /// <returns>see summary</returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("&x_first_name=" + _first_name);
-            sb.Append("&x_last_name=" + _last_name);
-            sb.Append("&x_company=" + _company);
-            sb.Append("&x_address=" + _address);
-            sb.Append("&x_city=" + _city);
-            sb.Append("&x_state=" + _state);
-            sb.Append("&x_zip=" + _zip);
-            sb.Append("&x_country=" + _country);
-            sb.Append("&x_phone=" + _phone);
-            sb.Append("&x_fax=" + _fax);
-            sb.Append("&x_email=" + _email);
-            sb.Append("&x_cust_id=" + _customer_id);
-            sb.Append("&x_customer_ip=" + _customer_ip);
+            sb.Append("&x_first_name=" + this.firstName);
+            sb.Append("&x_last_name=" + this.lastName);
+            sb.Append("&x_company=" + this.company);
+            sb.Append("&x_address=" + this.address);
+            sb.Append("&x_city=" + this.city);
+            sb.Append("&x_state=" + this.state);
+            sb.Append("&x_zip=" + this.zip);
+            sb.Append("&x_country=" + this.country);
+            sb.Append("&x_phone=" + this.phone);
+            sb.Append("&x_fax=" + this.fax);
+            sb.Append("&x_email=" + this.email);
+            sb.Append("&x_cust_id=" + this.customerId);
+            sb.Append("&x_customer_ip=" + this.customerIp);
 
             return sb.ToString();
         }

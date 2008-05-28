@@ -1,129 +1,194 @@
-/*
-Copyright (c) 2008 Mission3, INC (jbest@mission3.com)
-
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
-*/
-
-using System;
-using System.Collections.Generic;
-using System.Text;
+//-----------------------------------------------------------------------
+// <copyright file="ShippingInfo.cs" company="Mission3, Inc.">
+//      Copyright (c) Mission3, Inc. All rights reserved.
+//
+//      Permission is hereby granted, free of charge, to any person
+//      obtaining a copy of this software and associated documentation
+//      files (the "Software"), to deal in the Software without
+//      restriction, including without limitation the rights to use,
+//      copy, modify, merge, publish, distribute, sublicense, and/or sell
+//      copies of the Software, and to permit persons to whom the
+//      Software is furnished to do so, subject to the following
+//      conditions:
+//
+//      The above copyright notice and this permission notice shall be
+//      included in all copies or substantial portions of the Software.
+//
+//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+//      OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+//      HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+//      WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+//      FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+//      OTHER DEALINGS IN THE SOFTWARE.
+// </copyright>
+//-----------------------------------------------------------------------
 
 namespace PaymentProcess
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
+    /// <summary>
+    /// Shipping information
+    /// </summary>
     public class ShippingInfo
     {
-        private string _first_name;
+        /// <summary>
+        /// Ship to first name
+        /// </summary>
+        private string firstName;
 
-        public string x_ship_to_first_name
+        /// <summary>
+        /// Ship to last name
+        /// </summary>
+        private string lastName;
+
+        /// <summary>
+        /// Ship to company
+        /// </summary>
+        private string company;
+
+        /// <summary>
+        /// Ship to address
+        /// </summary>
+        private string address;
+
+        /// <summary>
+        /// Ship to city
+        /// </summary>
+        private string city;
+
+        /// <summary>
+        /// Ship to state
+        /// </summary>
+        private string state;
+
+        /// <summary>
+        /// Ship to zip code
+        /// </summary>
+        private string zip;
+
+        /// <summary>
+        /// Ship to country
+        /// </summary>
+        private string country;
+
+        /// <summary>
+        /// ShippingInfo CTor
+        /// </summary>
+        /// <param name="ship_to_first_name">Ship to first name</param>
+        /// <param name="ship_to_last_name">Ship to last name</param>
+        /// <param name="ship_to_company">Ship to company</param>
+        /// <param name="ship_to_address">Ship to address</param>
+        /// <param name="ship_to_city">Ship to city</param>
+        /// <param name="ship_to_state">Ship to state</param>
+        /// <param name="ship_to_zip">Ship to zip code</param>
+        /// <param name="ship_to_country">Ship to country</param>
+        public ShippingInfo(string ship_to_first_name, string ship_to_last_name, string ship_to_company, string ship_to_address, string ship_to_city, string ship_to_state, string ship_to_zip, string ship_to_country)
         {
-            get { return _first_name; }
-            set { _first_name = value; }
+            this.firstName = ship_to_first_name;
+            this.lastName = ship_to_last_name;
+            this.company = ship_to_company;
+            this.address = ship_to_address;
+            this.city = ship_to_city;
+            this.state = ship_to_state;
+            this.zip = ship_to_zip;
+            this.country = ship_to_country;
         }
 
-        private string _last_name;
-
-        public string x_ship_to_last_name
+        /// <summary>
+        /// Gets or sets ship to first name
+        /// </summary>
+        public string X_Ship_To_First_Name
         {
-            get { return _last_name; }
-            set { _last_name = value; }
+            get { return this.firstName; }
+            set { this.firstName = value; }
         }
 
-        private string _company;
-
-        public string x_ship_to_company
+        /// <summary>
+        /// Gets or sets ship to last name
+        /// </summary>
+        public string X_Ship_To_Last_Name
         {
-            get { return _company; }
-            set { _company = value; }
+            get { return this.lastName; }
+            set { this.lastName = value; }
         }
 
-        private string _address;
-
-        public string x_ship_to_address
+        /// <summary>
+        /// Gets or sets ship to compay
+        /// </summary>
+        public string X_Ship_To_Company
         {
-            get { return _address; }
-            set { _address = value; }
+            get { return this.company; }
+            set { this.company = value; }
         }
 
-        private string _city;
-
-        public string x_ship_to_city
+        /// <summary>
+        /// Gets or sets ship to address
+        /// </summary>
+        public string X_Ship_To_Address
         {
-            get { return _city; }
-            set { _city = value; }
+            get { return this.address; }
+            set { this.address = value; }
         }
 
-        private string _state;
-
-        public string x_ship_to_state
+        /// <summary>
+        /// Gets or sets ship to city
+        /// </summary>
+        public string X_Ship_To_City
         {
-            get { return _state; }
-            set { _state = value; }
+            get { return this.city; }
+            set { this.city = value; }
         }
 
-        private string _zip;
-
-        public string x_ship_to_zip
+        /// <summary>
+        /// Gets or sets ship to state
+        /// </summary>
+        public string X_Ship_To_State
         {
-            get { return _zip; }
-            set { _zip = value; }
+            get { return this.state; }
+            set { this.state = value; }
         }
 
-        private string _country;
-
-        public string x_ship_to_country
+        /// <summary>
+        /// Gets or sets ship to zip code
+        /// </summary>
+        public string X_Ship_To_Zip
         {
-            get { return _country; }
-            set { _country = value; }
+            get { return this.zip; }
+            set { this.zip = value; }
         }
 
-        public ShippingInfo(string ship_to_first_name, string ship_to_last_name,
-            string ship_to_company, string ship_to_address, string ship_to_city,
-            string ship_to_state, string ship_to_zip, string ship_to_country)
+        /// <summary>
+        /// Gets or sets ship to country
+        /// </summary>
+        public string X_Ship_To_Country
         {
-            _first_name = ship_to_first_name;
-            _last_name = ship_to_last_name;
-            _company = ship_to_company;
-            _address = ship_to_address;
-            _city = ship_to_city;
-            _state = ship_to_state;
-            _zip = ship_to_zip;
-            _country = ship_to_country;
+            get { return this.country; }
+            set { this.country = value; }
         }
 
+        /// <summary>
+        /// Builds the HTTP POST string for AuthorizeRequest
+        /// </summary>
+        /// <returns>see summary</returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.Append("&x_ship_to_first_name=" + _first_name);
-            sb.Append("&x_ship_to_last_name=" + _last_name);
-            sb.Append("&x_ship_to_company=" + _company);
-            sb.Append("&x_ship_to_address=" + _address);
-            sb.Append("&x_ship_to_city=" + _city);
-            sb.Append("&x_ship_to_state=" + _state);
-            sb.Append("&x_ship_to_zip=" + _zip);
-            sb.Append("&x_ship_to_country=" + _country);
+            sb.Append("&x_ship_to_first_name=" + this.firstName);
+            sb.Append("&x_ship_to_last_name=" + this.lastName);
+            sb.Append("&x_ship_to_company=" + this.company);
+            sb.Append("&x_ship_to_address=" + this.address);
+            sb.Append("&x_ship_to_city=" + this.city);
+            sb.Append("&x_ship_to_state=" + this.state);
+            sb.Append("&x_ship_to_zip=" + this.zip);
+            sb.Append("&x_ship_to_country=" + this.country);
 
             return sb.ToString();
-
         }
     }
 }
