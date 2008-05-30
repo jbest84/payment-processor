@@ -118,7 +118,7 @@ namespace PaymentProcess
         /// <param name="auth_code">authorization code</param>
         public CreditTransactionInfo(string version, decimal amount, string card_num, string exp_date, string trans_id, string ttype, string auth_code) : base(version, amount, "CC")
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "CreditTransactionInfo CTor");
+            Trace.WriteLineIf(this.ts.TraceInfo, "CreditTransactionInfo CTor (string, decimal, string, string, string, string)");
             this.version = version;
             this.amount = amount;
             this.cardNum = card_num;
@@ -237,7 +237,8 @@ namespace PaymentProcess
         /// <returns>see summary</returns>
         public override string ToString()
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "CreditTransactionInfo ToString");
+            Trace.WriteLineIf(this.ts.TraceInfo, "CreditTransactionInfo - ToString start");
+
             StringBuilder sb = new StringBuilder();
             sb.Append(base.ToString());
             sb.Append("&x_type=" + this.ttype);
@@ -258,6 +259,9 @@ namespace PaymentProcess
             {
                 sb.Append("&x_auth_code=" + this.authCode);
             }
+
+            Trace.WriteLineIf(this.ts.TraceInfo, "\tStringbuilder value to return: " + sb.ToString());
+            Trace.WriteLineIf(this.ts.TraceInfo, "CreditTransactionInfo - ToString end");
 
             return sb.ToString();
         }

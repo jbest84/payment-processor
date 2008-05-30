@@ -30,6 +30,7 @@ namespace PaymentProcess
     using System;
     using System.Collections.Generic;
     using System.Text;
+    using System.Diagnostics;
 
     /// <summary>
     /// Order information
@@ -47,12 +48,18 @@ namespace PaymentProcess
         private string description = "";
 
         /// <summary>
+        /// TraceSwitch PaymentProcess
+        /// </summary>
+        private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
+
+        /// <summary>
         /// OrderInfo CTor
         /// </summary>
         /// <param name="invoice_number">Order invoice number</param>
         /// <param name="description">Order description</param>
         public OrderInfo(string invoice_number, string description)
         {
+            Trace.WriteLineIf(this.ts.TraceInfo, "OrderInfo - CTor (string, string)");
             this.invoiceNum = invoice_number;
             this.description = description;
         }
@@ -81,9 +88,14 @@ namespace PaymentProcess
         /// <returns>see summary</returns>
         public override string ToString()
         {
+            Trace.WriteLineIf(this.ts.TraceInfo, "OrderInfo - ToString start");
+
             StringBuilder sb = new StringBuilder();
             sb.Append("&x_invoice_num=" + this.invoiceNum);
             sb.Append("&x_description=" + this.description);
+
+            Trace.WriteLineIf(this.ts.TraceInfo, "Stringbuilder value to return: " + sb.ToString());
+            Trace.WriteLineIf(this.ts.TraceInfo, "OrderInfo - ToString end");
 
             return sb.ToString();
         }

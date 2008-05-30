@@ -88,7 +88,7 @@ namespace PaymentProcess
         public BankTransactionInfo(string version, decimal amount, int aba_code, int acct_num, string acct_type, string bank_name, string acct_name)
             : base(version, amount, "ECHECK")
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "BankTransactionInfo CTor");
+            Trace.WriteLineIf(this.ts.TraceInfo, "BankTransactionInfo CTor (string, decimal, int, int, string, string, string)");
             this.X_Recurring_Billing = "FALSE";
             this.abaCode = aba_code;
             this.acctNum = acct_num;
@@ -158,7 +158,7 @@ namespace PaymentProcess
         /// <returns>See summary</returns>
         public override string ToString()
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "BankTransactionInfo ToString");
+            Trace.WriteLineIf(this.ts.TraceInfo, "BankTransactionInfo - ToString start");
             StringBuilder sb = new StringBuilder();
             sb.Append(base.ToString());
 
@@ -188,6 +188,9 @@ namespace PaymentProcess
             }
 
             sb.Append("&x_echeck_type=" + XEcheckTypes.WEB);
+
+            Trace.WriteLineIf(this.ts.TraceInfo, "\tStringbuilder value to return: " + sb.ToString());
+            Trace.WriteLineIf(this.ts.TraceInfo, "BankTransactionInfo - ToString end");
 
             return sb.ToString();
         }

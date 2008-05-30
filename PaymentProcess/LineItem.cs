@@ -30,6 +30,7 @@ namespace PaymentProcess
     using System;
     using System.Collections.Generic;
     using System.Text;
+    using System.Diagnostics;
 
     /// <summary>
     /// Line item information
@@ -67,6 +68,11 @@ namespace PaymentProcess
         private string taxable;
 
         /// <summary>
+        /// TraceSwitch PaymentProcess
+        /// </summary>
+        private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
+
+        /// <summary>
         /// LineItem CTor
         /// </summary>
         /// <param name="itemId">line item ID</param>
@@ -77,6 +83,7 @@ namespace PaymentProcess
         /// <param name="taxable">line item taxable</param>
         public LineItem(string itemId, string itemName, string itemDesc, decimal quantity, decimal itemPrice, bool taxable)
         {
+            Trace.WriteLineIf(this.ts.TraceInfo, "LineItem - CTor (string, string, string, decimal, decimal, bool)");
             this.itemId = itemId;
             this.itemName = itemName;
             this.itemDesc = itemDesc;
@@ -145,6 +152,8 @@ namespace PaymentProcess
         /// <returns>Delimited string for HTTP POST</returns>
         public override string ToString()
         {
+            Trace.WriteLineIf(this.ts.TraceInfo, "LineItem - ToString start");
+
             StringBuilder sb = new StringBuilder();
             sb.Append("&x_line_item=" + this.itemId);
             sb.Append("<|>" + this.itemName);
@@ -152,6 +161,10 @@ namespace PaymentProcess
             sb.Append("<|>" + this.quantity);
             sb.Append("<|>" + this.itemPrice);
             sb.Append("<|>" + this.taxable);
+
+            Trace.WriteLineIf(this.ts.TraceInfo, "Stringbuilder value to return: " + sb.ToString());
+            Trace.WriteLineIf(this.ts.TraceInfo, "LineItem - ToString end");
+
             return sb.ToString();
         }
     }

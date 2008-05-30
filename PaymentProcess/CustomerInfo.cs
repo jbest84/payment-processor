@@ -30,6 +30,7 @@ namespace PaymentProcess
     using System;
     using System.Collections.Generic;
     using System.Text;
+    using System.Diagnostics;
 
     /// <summary>
     /// Holds customer information for AuthorizeRequest
@@ -102,6 +103,11 @@ namespace PaymentProcess
         private string customerIp;
 
         /// <summary>
+        /// TraceSwitch PaymentProcess
+        /// </summary>
+        private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
+
+        /// <summary>
         /// CustomerInfo CTor
         /// </summary>
         /// <param name="first_name">Customer first name</param>
@@ -119,6 +125,7 @@ namespace PaymentProcess
         /// <param name="customer_ip">Customer IP address</param>
         public CustomerInfo(string first_name, string last_name, string company, string address, string city, string state, string zip, string country, string phone, string fax, string email, string customer_id, string customer_ip)
         {
+            Trace.WriteLineIf(this.ts.TraceInfo, "CustomerInfo - CTor (string * 13)");
             this.firstName = first_name;
             this.lastName = last_name;
             this.company = company;
@@ -257,6 +264,8 @@ namespace PaymentProcess
         /// <returns>see summary</returns>
         public override string ToString()
         {
+            Trace.WriteLineIf(this.ts.TraceInfo, "CustomerInfo - ToString start");
+
             StringBuilder sb = new StringBuilder();
             sb.Append("&x_first_name=" + this.firstName);
             sb.Append("&x_last_name=" + this.lastName);
@@ -271,6 +280,9 @@ namespace PaymentProcess
             sb.Append("&x_email=" + this.email);
             sb.Append("&x_cust_id=" + this.customerId);
             sb.Append("&x_customer_ip=" + this.customerIp);
+
+            Trace.WriteLineIf(this.ts.TraceInfo, "\tStringbuilder value to return: " + sb.ToString());
+            Trace.WriteLineIf(this.ts.TraceInfo, "CustomerInfo - ToString start");
 
             return sb.ToString();
         }

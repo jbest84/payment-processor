@@ -95,7 +95,7 @@ namespace PaymentProcess
             this.merchantInfo = mi;
             this.transactionInfo = ti;
             this.url = url;
-            Trace.WriteLineIf(this.ts.TraceInfo, "AuthorizeRequest - CTor");
+            Trace.WriteLineIf(this.ts.TraceInfo, "AuthorizeRequest - CTor (MerchantInfo, TransactionInfo, url)");
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace PaymentProcess
         public AuthorizeRequest(MerchantInfo mi, TransactionInfo ti, string url, OrderInfo oi, ShippingInfo si, ItemizedOrderInfo ioi, CustomerInfo ci, AdditionalShippingInfo asi)
             : this(mi, ti, url)
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "AuthorizeRequest - CTor additional");
+            Trace.WriteLineIf(this.ts.TraceInfo, "AuthorizeRequest - CTor (MerhantInfo, TransactionInfo, url, OrderInfo, ShippingInfo, ItemizedOrderInfo, CustomerInfo, AdditionalShippingInfo)");
             this.additionalShippingInfo = asi;
             this.customerInfo = ci;
             this.itemizedOrderInfo = ioi;

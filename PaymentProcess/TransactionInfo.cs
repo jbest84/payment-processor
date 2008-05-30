@@ -80,7 +80,7 @@ namespace PaymentProcess
         /// <param name="method">Transaction method</param>
         public TransactionInfo(string version, decimal amount, string method)
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "TransactionInfo CTor");
+            Trace.WriteLineIf(this.ts.TraceInfo, "TransactionInfo - CTor (string, decimal, string)");
             this.version = version;
             this.amount = amount;
 
@@ -158,7 +158,8 @@ namespace PaymentProcess
         /// <returns>see summary</returns>
         public override string ToString()
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "TransactionInfo ToString");
+            Trace.WriteLineIf(this.ts.TraceInfo, "TransactionInfo - ToString start");
+
             StringBuilder sb = new StringBuilder();
             sb.Append("&x_version=" + this.version);
             sb.Append("&x_method=" + this.method);
@@ -174,6 +175,9 @@ namespace PaymentProcess
             {
                 sb.Append("&x_duplicate_window=" + this.duplicateWindow);
             }
+
+            Trace.WriteLineIf(this.ts.TraceInfo, "\tStringbuilder value to return: " + sb.ToString());
+            Trace.WriteLineIf(this.ts.TraceInfo, "TransactionInfo - ToString end");
 
             return sb.ToString();
         }

@@ -30,6 +30,7 @@ namespace PaymentProcess
     using System;
     using System.Collections.Generic;
     using System.Text;
+    using System.Diagnostics;
 
     /// <summary>
     /// Itemized order information
@@ -42,11 +43,17 @@ namespace PaymentProcess
         private List<LineItem> lineItems;
 
         /// <summary>
+        /// TraceSwitch PaymentProcess
+        /// </summary>
+        private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
+
+        /// <summary>
         /// ItemizedOrderInfo CTor
         /// </summary>
         /// <param name="lineItems">List collection of LineItems</param>
         public ItemizedOrderInfo(List<LineItem> lineItems)
         {
+            Trace.WriteLineIf(this.ts.TraceInfo, "ItemizedOrderInfo - CTor (List<LineItem>)");
             this.lineItems = lineItems;
         }
 
@@ -65,11 +72,16 @@ namespace PaymentProcess
         /// <returns>Delimited string for HTTP POST</returns>
         public override string ToString()
         {
+            Trace.WriteLineIf(this.ts.TraceInfo, "ItemizedOrderInfo - ToString start");
+
             StringBuilder sb = new StringBuilder();
             foreach (LineItem li in this.lineItems)
             {
                 sb.Append("&x_line_item=" + li.ToString());
             }
+
+            Trace.WriteLineIf(this.ts.TraceInfo, "Stringbuilder value to return: " + sb.ToString());
+            Trace.WriteLineIf(this.ts.TraceInfo, "ItemizedOrderInfo - ToString end");
 
             return sb.ToString();
         }

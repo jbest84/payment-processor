@@ -30,6 +30,7 @@ namespace PaymentProcess
     using System;
     using System.Collections.Generic;
     using System.Text;
+    using System.Diagnostics;
 
     /// <summary>
     /// Base class for FreightItem, TaxItem, and DutyItem.
@@ -52,6 +53,11 @@ namespace PaymentProcess
         private decimal amount;
 
         /// <summary>
+        /// TraceSwitch PaymentProcess
+        /// </summary>
+        private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
+
+        /// <summary>
         /// Item constructor (CTor)
         /// </summary>
         /// <param name="name">Item name information</param>
@@ -59,6 +65,7 @@ namespace PaymentProcess
         /// <param name="amount">Item amount information</param>
         public Item(string name, string description, decimal amount)
         {
+            Trace.WriteLineIf(this.ts.TraceInfo, "Item - CTor (string, string, decimal)");
             this.itemName = name;
             this.description = description;
             this.amount = amount;
@@ -97,10 +104,16 @@ namespace PaymentProcess
         /// <returns>Delimited string for HTTP POST</returns>
         public override string ToString()
         {
+            Trace.WriteLineIf(this.ts.TraceInfo, "Item - ToString start");
+
             StringBuilder sb = new StringBuilder();
             sb.Append(this.itemName);
             sb.Append("<|>" + this.description);
             sb.Append("<|>" + this.amount);
+
+            Trace.WriteLineIf(this.ts.TraceInfo, "Stringbuilder value to return: " + sb.ToString());
+            Trace.WriteLineIf(this.ts.TraceInfo, "Item - ToString end");
+
             return sb.ToString();
         }
     }

@@ -30,12 +30,18 @@ namespace PaymentProcess
     using System;
     using System.Collections.Generic;
     using System.Text;
+    using System.Diagnostics;
 
     /// <summary>
     /// Holds duty information
     /// </summary>
     public class DutyItem : Item
     {
+        /// <summary>
+        /// TraceSwitch PaymentProcess
+        /// </summary>
+        private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
+
         /// <summary>
         /// DutyItem CTor
         /// </summary>
@@ -44,6 +50,7 @@ namespace PaymentProcess
         /// <param name="amount">Duty item amount</param>
         public DutyItem(string name, string description, decimal amount) : base(name, description, amount)
         {
+            Trace.WriteLineIf(this.ts.TraceInfo, "DutyItem - CTor (string, string, decimal)");
         }
     }
 }
