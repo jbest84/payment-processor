@@ -30,6 +30,7 @@ namespace PaymentProcess
     using System;
     using System.Collections.Generic;
     using System.Text;
+    using System.Diagnostics;
 
     /// <summary>
     /// Merchant information
@@ -47,12 +48,18 @@ namespace PaymentProcess
         private string tranKey;
 
         /// <summary>
+        /// TraceSwitch PaymentProcess
+        /// </summary>
+        private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
+
+        /// <summary>
         /// MerchantInfo CTor
         /// </summary>
         /// <param name="login">Merchant login</param>
         /// <param name="tran_key">Merchant transaction key</param>
         public MerchantInfo(string login, string tran_key)
         {
+            Trace.WriteLineIf(this.ts.TraceInfo, "MerchantInfo - CTor (string, string)");
             this.login = login;
             this.tranKey = tran_key;
         }
@@ -81,9 +88,15 @@ namespace PaymentProcess
         /// <returns>see summary</returns>
         public override string ToString()
         {
+            Trace.WriteLineIf(this.ts.TraceInfo, "MerchantInfo - ToString start");
+
             StringBuilder sb = new StringBuilder();
             sb.Append("x_login=" + this.login);
             sb.Append("&x_tran_key=" + this.tranKey);
+
+            Trace.WriteLineIf(this.ts.TraceInfo, "Stringbuilder value to return: " + sb.ToString());
+            Trace.WriteLineIf(this.ts.TraceInfo, "MerchantInfo - ToString end");
+
             return sb.ToString();
         }
     }

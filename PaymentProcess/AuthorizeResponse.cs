@@ -256,7 +256,7 @@ namespace PaymentProcess
         /// <param name="results">Raw result from the AuthorizeRequest</param>
         public AuthorizeResponse(string results)
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "AuthorizeResponse CTor");
+            Trace.WriteLineIf(this.ts.TraceInfo, "AuthorizeResponse CTor (string)");
             this.results = results;
             this.Parse();
         }
@@ -265,7 +265,7 @@ namespace PaymentProcess
         /// AuthorizeResponse private CTor
         /// </summary>
         private AuthorizeResponse()
-        { 
+        {
         }
 
         /// <summary>

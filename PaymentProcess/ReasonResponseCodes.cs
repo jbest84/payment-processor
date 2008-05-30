@@ -30,6 +30,7 @@ namespace PaymentProcess
     using System;
     using System.Collections.Generic;
     using System.Text;
+    using System.Diagnostics;
 
     /// <summary>
     /// Reason response codes for authorize.NET responses
@@ -42,10 +43,17 @@ namespace PaymentProcess
         private List<ResponseReason> reasons;
 
         /// <summary>
+        /// TraceSwitch PaymentProcess
+        /// </summary>
+        private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
+
+        /// <summary>
         /// ReasonResponseCodes CTor
         /// </summary>
         public ReasonResponseCodes()
         {
+            Trace.WriteLineIf(this.ts.TraceInfo, "ReasonResponseCodes - CTor ()");
+
             List<ResponseReason> reasons = new List<ResponseReason>();
             reasons.Add(new ResponseReason(1, 1, "This transaction has been approved.", ""));
             reasons.Add(new ResponseReason(2, 2, "This transaction has been declined.", ""));
@@ -243,7 +251,13 @@ namespace PaymentProcess
         /// <returns>Notes string for the given reason code</returns>
         public string GetReasonNote(int reasonCode)
         {
+            Trace.WriteLineIf(this.ts.TraceInfo, "ReasonResponseCodes - GetReasonNote start");
             ResponseReason reason = this.FindMatch(reasonCode);
+
+            Trace.WriteLineIf(this.ts.TraceInfo, "\tReasonCode: " + reasonCode);
+            Trace.WriteLineIf(this.ts.TraceInfo, "\tMatch not found? " + reason.IsEmpty);
+            Trace.WriteLineIf(this.ts.TraceInfo, "ReasonResponseCodes - GetReasonNote end");
+
             return reason.IsEmpty ? null : reason.Notes;
         }
 
@@ -254,7 +268,14 @@ namespace PaymentProcess
         /// <returns>Reason text for the given reason code</returns>
         public string GetReasonText(int reasonCode)
         {
+            Trace.WriteLineIf(this.ts.TraceInfo, "ReasonResponseCodes - GetReasonText start");
+
             ResponseReason reason = this.FindMatch(reasonCode);
+
+            Trace.WriteLineIf(this.ts.TraceInfo, "\tReasonCode: " + reasonCode);
+            Trace.WriteLineIf(this.ts.TraceInfo, "\tMatch not found? " + reason.IsEmpty);
+            Trace.WriteLineIf(this.ts.TraceInfo, "ReasonResponseCodes - GetReasonText end");
+
             return reason.IsEmpty ? null : reason.ResponseReasonText;
         }
 
@@ -265,15 +286,24 @@ namespace PaymentProcess
         /// <returns>ResponseReason in the list of reasons</returns>
         private ResponseReason FindMatch(int reasonCode)
         {
+            Trace.WriteLineIf(this.ts.TraceInfo, "ReasonResponseCodes - FindMatch start");
+
+            // Empty ResponseReason return variable
+            ResponseReason r = new ResponseReason(true);
+
             foreach (ResponseReason reason in this.reasons)
             {
                 if (reason.ResponseReasonCode == reasonCode)
                 {
-                    return reason;
+                    Trace.WriteLineIf(this.ts.TraceInfo, "\tMatch found: " + reason.ResponseReasonText);
+                    r = reason;
                 }
             }
 
-            return new ResponseReason(true);
+            Trace.WriteLineIf(this.ts.TraceInfo, "ReasonResponseCodes - FindMatch end");
+
+            // Return the reason (default is empty)
+            return r;
         }
     }
 }

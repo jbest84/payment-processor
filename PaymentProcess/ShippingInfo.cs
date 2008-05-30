@@ -30,6 +30,7 @@ namespace PaymentProcess
     using System;
     using System.Collections.Generic;
     using System.Text;
+    using System.Diagnostics;
 
     /// <summary>
     /// Shipping information
@@ -77,6 +78,11 @@ namespace PaymentProcess
         private string country;
 
         /// <summary>
+        /// TraceSwitch PaymentProcess
+        /// </summary>
+        private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
+
+        /// <summary>
         /// ShippingInfo CTor
         /// </summary>
         /// <param name="ship_to_first_name">Ship to first name</param>
@@ -89,6 +95,8 @@ namespace PaymentProcess
         /// <param name="ship_to_country">Ship to country</param>
         public ShippingInfo(string ship_to_first_name, string ship_to_last_name, string ship_to_company, string ship_to_address, string ship_to_city, string ship_to_state, string ship_to_zip, string ship_to_country)
         {
+            Trace.WriteLineIf(this.ts.TraceInfo, "ShippingInfo - CTor (string * 8)");
+
             this.firstName = ship_to_first_name;
             this.lastName = ship_to_last_name;
             this.company = ship_to_company;
@@ -177,6 +185,8 @@ namespace PaymentProcess
         /// <returns>see summary</returns>
         public override string ToString()
         {
+            Trace.WriteLineIf(this.ts.TraceInfo, "ShippingInfo - ToString start");
+
             StringBuilder sb = new StringBuilder();
 
             sb.Append("&x_ship_to_first_name=" + this.firstName);
@@ -187,6 +197,9 @@ namespace PaymentProcess
             sb.Append("&x_ship_to_state=" + this.state);
             sb.Append("&x_ship_to_zip=" + this.zip);
             sb.Append("&x_ship_to_country=" + this.country);
+
+            Trace.WriteLineIf(this.ts.TraceInfo, "Stringbuilder value to return: " + sb.ToString());
+            Trace.WriteLineIf(this.ts.TraceInfo, "ShippingInfo - ToString end");
 
             return sb.ToString();
         }

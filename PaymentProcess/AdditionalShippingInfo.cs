@@ -30,6 +30,7 @@ namespace PaymentProcess
     using System;
     using System.Collections.Generic;
     using System.Text;
+    using System.Diagnostics;
 
     /// <summary>
     /// Additional shipping information for the request.
@@ -82,6 +83,11 @@ namespace PaymentProcess
         private string purchaseNum;
 
         /// <summary>
+        /// TraceSwitch PaymentProcess
+        /// </summary>
+        private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
+
+        /// <summary>
         /// AdditionalShippingInfo Ctor
         /// </summary>
         /// <param name="tax">tax information</param>
@@ -91,6 +97,7 @@ namespace PaymentProcess
         /// <param name="ponumber">purchase order number</param>
         public AdditionalShippingInfo(TaxItem tax, FreightItem freight, DutyItem duty, bool tax_exempt, string ponumber)
         {
+            Trace.WriteLineIf(this.ts.TraceInfo, "AdditionalShippingInfo CTor - (TaxItem, FreightItem, DutyItem, bool, string)");
             this.tax = tax;
             this.freight = freight;
             this.duty = duty;
@@ -125,6 +132,7 @@ namespace PaymentProcess
         /// <param name="ponumber">purchase order number</param>
         public AdditionalShippingInfo(decimal tax_amount, decimal freight_amount, decimal duty_amount, bool tax_exempt, string ponumber)
         {
+            Trace.WriteLineIf(this.ts.TraceInfo, "AdditionalShippingInfo CTor - (decimal, decimal, decimal, bool, string)");
             this.taxAmount = tax_amount;
             this.freightAmount = freight_amount;
             this.dutyAmount = duty_amount;
@@ -219,6 +227,8 @@ namespace PaymentProcess
         /// <returns>See summary</returns>
         public override string ToString()
         {
+            Trace.WriteLineIf(this.ts.TraceInfo, "AdditionalShippingInfo - ToString start");
+
             // CTor's build the first part of this string
             // finish the remaining two optional fields.
             if (!String.IsNullOrEmpty(this.taxExempt))
@@ -231,6 +241,8 @@ namespace PaymentProcess
                 this.sb.Append("&x_po_num=" + this.purchaseNum);
             }
 
+            Trace.WriteLineIf(this.ts.TraceInfo, "\tStringbuilder value to return: " + this.sb.ToString());
+            Trace.WriteLineIf(this.ts.TraceInfo, "AdditionalShippingInfo - ToString end");
             return this.sb.ToString();
         }
     }
