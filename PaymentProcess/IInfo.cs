@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------
-// <copyright file="FreightItem.cs" company="Mission3, Inc.">
+// <copyright file="IInfo.cs" company="Mission3, Inc.">
 //      Copyright (c) Mission3, Inc. All rights reserved.
 //
 //      Permission is hereby granted, free of charge, to any person
@@ -30,27 +30,16 @@ namespace PaymentProcess
     using System;
     using System.Collections.Generic;
     using System.Text;
-    using System.Diagnostics;
 
     /// <summary>
-    /// Freight item information
+    /// Interface for all of our info classes.
     /// </summary>
-    public class FreightItem : Item, IInfo
+    public interface IInfo
     {
         /// <summary>
-        /// TraceSwitch PaymentProcess
+        /// Each info class overrides ToString for the POST request.
         /// </summary>
-        private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
-
-        /// <summary>
-        /// FreightItem CTor
-        /// </summary>
-        /// <param name="name">Freight item name</param>
-        /// <param name="description">Freight item description</param>
-        /// <param name="amount">Freight item amount</param>
-        public FreightItem(string name, string description, decimal amount) : base(name, description, amount)
-        {
-            Trace.WriteLineIf(this.ts.TraceInfo, "FreightItem - CTor (string, string, decimal)");
-        }
+        /// <returns>POST string</returns>
+        string ToString();
     }
 }

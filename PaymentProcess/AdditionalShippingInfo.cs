@@ -35,7 +35,7 @@ namespace PaymentProcess
     /// <summary>
     /// Additional shipping information for the request.
     /// </summary>
-    public class AdditionalShippingInfo
+    public class AdditionalShippingInfo : IInfo
     {
         /// <summary>
         /// Stringbuilder for the POST string

@@ -35,7 +35,7 @@ namespace PaymentProcess
     /// <summary>
     /// Merchant information
     /// </summary>
-    public class MerchantInfo
+    public class MerchantInfo : IInfo
     {
         /// <summary>
         /// Merchant login

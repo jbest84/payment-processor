@@ -35,7 +35,7 @@ namespace PaymentProcess
     /// <summary>
     /// Line item information
     /// </summary>
-    public class LineItem
+    public class LineItem : IInfo
     {
         /// <summary>
         /// Line item ID

@@ -35,7 +35,7 @@ namespace PaymentProcess
     /// <summary>
     /// Base class for FreightItem, TaxItem, and DutyItem.
     /// </summary>
-    public abstract class Item
+    public abstract class Item : IInfo
     {
         /// <summary>
         /// Item name information

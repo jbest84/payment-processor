@@ -26,6 +26,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\PaymentProcess.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -42,6 +43,7 @@
     <Compile Include="CustomerInfo.cs" />
     <Compile Include="DutyItem.cs" />
     <Compile Include="FreightItem.cs" />
+    <Compile Include="IInfo.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="ItemizedOrderInfo.cs" />
     <Compile Include="LineItem.cs" />

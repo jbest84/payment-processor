@@ -35,7 +35,7 @@ namespace PaymentProcess
     /// <summary>
     /// Holds credit card transaction information
     /// </summary>
-    public class CreditTransactionInfo : TransactionInfo
+    public class CreditTransactionInfo : TransactionInfo, IInfo
     {
         /// <summary>
         /// TraceSwitch PaymentProcess
