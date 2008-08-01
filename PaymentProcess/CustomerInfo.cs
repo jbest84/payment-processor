@@ -35,7 +35,7 @@ namespace PaymentProcess
     /// <summary>
     /// Holds customer information for AuthorizeRequest
     /// </summary>
-    public class CustomerInfo
+    public class CustomerInfo : IInfo
     {
         /// <summary>
         /// Customer first name

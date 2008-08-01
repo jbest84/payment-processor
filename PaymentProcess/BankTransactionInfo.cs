@@ -35,7 +35,7 @@ namespace PaymentProcess
     /// <summary>
     /// Bank transaction info for ECHECK transactions.
     /// </summary>
-    public class BankTransactionInfo : TransactionInfo
+    public class BankTransactionInfo : TransactionInfo, IInfo
     {
         /// <summary>
         /// TraceSwitch PaymentProcess

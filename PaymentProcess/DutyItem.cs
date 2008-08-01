@@ -35,7 +35,7 @@ namespace PaymentProcess
     /// <summary>
     /// Holds duty information
     /// </summary>
-    public class DutyItem : Item
+    public class DutyItem : Item, IInfo
     {
         /// <summary>
         /// TraceSwitch PaymentProcess

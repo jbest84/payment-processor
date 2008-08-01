@@ -35,7 +35,7 @@ namespace PaymentProcess
     /// <summary>
     /// Order information
     /// </summary>
-    public class OrderInfo
+    public class OrderInfo : IInfo
     {
         /// <summary>
         /// Order invoice number

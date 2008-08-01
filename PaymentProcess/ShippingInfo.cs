@@ -35,7 +35,7 @@ namespace PaymentProcess
     /// <summary>
     /// Shipping information
     /// </summary>
-    public class ShippingInfo
+    public class ShippingInfo : IInfo
     {
         /// <summary>
         /// Ship to first name

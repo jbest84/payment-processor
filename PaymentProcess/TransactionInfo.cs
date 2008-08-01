@@ -35,7 +35,7 @@ namespace PaymentProcess
     /// <summary>
     /// Base class for transactions
     /// </summary>
-    public abstract class TransactionInfo
+    public abstract class TransactionInfo : IInfo
     {
         /// <summary>
         /// TraceSwitch PaymentProcess

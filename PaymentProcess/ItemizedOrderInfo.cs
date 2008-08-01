@@ -35,7 +35,7 @@ namespace PaymentProcess
     /// <summary>
     /// Itemized order information
     /// </summary>
-    public class ItemizedOrderInfo
+    public class ItemizedOrderInfo : IInfo
     {
         /// <summary>
         /// List of line items

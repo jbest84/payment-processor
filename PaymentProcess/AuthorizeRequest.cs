@@ -40,41 +40,6 @@ namespace PaymentProcess
     public class AuthorizeRequest
     {
         /// <summary>
-        /// Required merchant information
-        /// </summary>
-        private MerchantInfo merchantInfo = null;
-
-        /// <summary>
-        /// Required transaction information
-        /// </summary>
-        private TransactionInfo transactionInfo = null;
-
-        /// <summary>
-        /// Optional additional shipping information
-        /// </summary>
-        private AdditionalShippingInfo additionalShippingInfo = null;
-
-        /// <summary>
-        /// Optional customer informaiton
-        /// </summary>
-        private CustomerInfo customerInfo = null;
-
-        /// <summary>
-        /// Optional itemized order information
-        /// </summary>
-        private ItemizedOrderInfo itemizedOrderInfo = null;
-
-        /// <summary>
-        /// Optional order information
-        /// </summary>
-        private OrderInfo orderInfo = null;
-
-        /// <summary>
-        /// Optional shipping information
-        /// </summary>
-        private ShippingInfo shippingInfo = null;
-
-        /// <summary>
         /// Default URL to send HTTP POST to (TEST)
         /// </summary>
         private string url = "https://test.authorize.net/gateway/transact.dll";
@@ -85,39 +50,18 @@ namespace PaymentProcess
         private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
 
         /// <summary>
-        /// AuthorizeRequest CTor
+        /// Info class container
         /// </summary>
-        /// <param name="mi">Merchant information class</param>
-        /// <param name="ti">Transaction information class</param>
-        /// <param name="url">URL to send HTTP POST</param>
-        public AuthorizeRequest(MerchantInfo mi, TransactionInfo ti, string url)
-        {
-            this.merchantInfo = mi;
-            this.transactionInfo = ti;
-            this.url = url;
-            Trace.WriteLineIf(this.ts.TraceInfo, "AuthorizeRequest - CTor (MerchantInfo, TransactionInfo, url)");
-        }
+        private List<IInfo> info = null;
 
-        /// <summary>
-        /// AuthorizeRequest CTor
-        /// </summary>
-        /// <param name="mi">Merchant information class</param>
-        /// <param name="ti">Transaction information class</param>
-        /// <param name="url">URL to send the HTTP POST</param>
-        /// <param name="oi">Order information class</param>
-        /// <param name="si">Shipping information class</param>
-        /// <param name="ioi">Itemized order information class</param>
-        /// <param name="ci">Customer information class</param>
-        /// <param name="asi">Additional shipping info class</param>
-        public AuthorizeRequest(MerchantInfo mi, TransactionInfo ti, string url, OrderInfo oi, ShippingInfo si, ItemizedOrderInfo ioi, CustomerInfo ci, AdditionalShippingInfo asi)
-            : this(mi, ti, url)
+        public AuthorizeRequest(string url, params IInfo[] args)
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "AuthorizeRequest - CTor (MerhantInfo, TransactionInfo, url, OrderInfo, ShippingInfo, ItemizedOrderInfo, CustomerInfo, AdditionalShippingInfo)");
-            this.additionalShippingInfo = asi;
-            this.customerInfo = ci;
-            this.itemizedOrderInfo = ioi;
-            this.orderInfo = oi;
-            this.shippingInfo = si;
+            Trace.WriteLineIf(this.ts.TraceInfo, "AuthorizeRequest - CTor");
+            info = new List<IInfo>();
+            foreach (IInfo i in args)
+            {
+                info.Add(i);
+            }
         }
 
         /// <summary>
@@ -169,54 +113,22 @@ namespace PaymentProcess
         /// <returns>Returns the full POST string as requird by Authorize.NET</returns>
         private string BuildPostString()
         {
+            Trace.WriteLineIf(this.ts.TraceInfo, "AuthorizeRequest - BuildPostString start");
             StringBuilder sb = new StringBuilder();
 
-            // Merchant information
-            if (this.merchantInfo != null)
+            foreach (IInfo i in this.info)
             {
-                sb.Append(this.merchantInfo.ToString());
-            }
-
-            // Transaction information
-            if (this.transactionInfo != null)
-            {
-                sb.Append(this.transactionInfo.ToString());
-            }
-
-            // Order information
-            if (this.orderInfo != null)
-            {
-                sb.Append(this.orderInfo.ToString());
-            }
-
-            // Shipping information
-            if (this.shippingInfo != null)
-            {
-                sb.Append(this.shippingInfo.ToString());
-            }
-
-            // ItemizedOrder information
-            if (this.itemizedOrderInfo != null)
-            {
-                sb.Append(this.itemizedOrderInfo.ToString());
-            }
-
-            // Customer information
-            if (this.customerInfo != null)
-            {
-                sb.Append(this.customerInfo.ToString());
-            }
-
-            // Additional shipping info
-            if (this.additionalShippingInfo != null)
-            {
-                sb.Append(this.additionalShippingInfo.ToString());
+                Trace.WriteLineIf(this.ts.TraceInfo, "\tBuildPostString - IInfo");
+                sb.Append(i.ToString());
             }
 
             // Delimited configuration
             sb.Append("&x_delim_data=TRUE");
             sb.Append("&x_delim_char=|");
             sb.Append("&x_relay_response=FALSE");
+
+            Trace.WriteLineIf(this.ts.TraceInfo, "AuthorizeRequest - BuildPostString end");
+
             return sb.ToString();
         }
     }
