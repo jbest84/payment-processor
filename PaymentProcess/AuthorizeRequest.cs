@@ -57,6 +57,7 @@ namespace PaymentProcess
         public AuthorizeRequest(string url, params IInfo[] args)
         {
             Trace.WriteLineIf(this.ts.TraceInfo, "AuthorizeRequest - CTor");
+            this.url = url;
             this.info = new List<IInfo>();
             foreach (IInfo i in args)
             {
