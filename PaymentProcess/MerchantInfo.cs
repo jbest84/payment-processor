@@ -91,7 +91,7 @@ namespace PaymentProcess
             Trace.WriteLineIf(this.ts.TraceInfo, "MerchantInfo - ToString start");
 
             StringBuilder sb = new StringBuilder();
-            sb.Append("x_login=" + this.login);
+            sb.Append("&x_login=" + this.login);
             sb.Append("&x_tran_key=" + this.tranKey);
 
             Trace.WriteLineIf(this.ts.TraceInfo, "Stringbuilder value to return: " + sb.ToString());
