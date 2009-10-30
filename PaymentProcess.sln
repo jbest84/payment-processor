@@ -1,7 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentProcess", "PaymentProcess.csproj", "{AF5E23BE-0EFE-4E04-9DA3-8D78A36BF051}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentProcess", "PaymentProcess\PaymentProcess.csproj", "{AF5E23BE-0EFE-4E04-9DA3-8D78A36BF051}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentProcessQuickStart", "PaymentProcessQuickStart\PaymentProcessQuickStart.csproj", "{BE53C6AD-D817-42A4-B89A-BD152E9CFE3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +15,10 @@ Global
 		{AF5E23BE-0EFE-4E04-9DA3-8D78A36BF051}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF5E23BE-0EFE-4E04-9DA3-8D78A36BF051}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF5E23BE-0EFE-4E04-9DA3-8D78A36BF051}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE53C6AD-D817-42A4-B89A-BD152E9CFE3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE53C6AD-D817-42A4-B89A-BD152E9CFE3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE53C6AD-D817-42A4-B89A-BD152E9CFE3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE53C6AD-D817-42A4-B89A-BD152E9CFE3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
