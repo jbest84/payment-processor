@@ -1,0 +1,16 @@
+syntax: glob
+
+.DS_Store
+build
+obj
+bin
+.svn
+*.orig
+*.suo
+*.tmp
+licenses.licx
+*.patch
+TestResults
+Debug
+Release
+*.log
