@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------
-// <copyright file="AdditionalShippingInfo.cs" company="Mission3, Inc.">
+// <copyright file="PaymentProcessQuickStart.cs" company="Mission3, Inc.">
 //      Copyright (c) Mission3, Inc. All rights reserved.
 //
 //      Permission is hereby granted, free of charge, to any person

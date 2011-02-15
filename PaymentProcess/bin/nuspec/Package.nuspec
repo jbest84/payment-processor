@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>payment-processor</id>
+    <version>1.12</version>
+    <authors>Jason Best</authors>
+    <owners>Mission3, INC.</owners>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <projectUrl>http://code.google.com/p/payment-processor/</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>
+        This is a C# library for communicating with the Authorize.NET payment gateway (using the Advanced Integration Method - AIM). Echeck is also supported.
+    </description>
+    <tags>Authorize.NET Payment Gateway echeck</tags>
+  </metadata>
+</package>
