@@ -1,9 +1,11 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentProcess", "PaymentProcess\PaymentProcess.csproj", "{AF5E23BE-0EFE-4E04-9DA3-8D78A36BF051}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentProcessQuickStart", "PaymentProcessQuickStart\PaymentProcessQuickStart.csproj", "{BE53C6AD-D817-42A4-B89A-BD152E9CFE3F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C2441E94-C515-490E-BE5B-79602842E814}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
