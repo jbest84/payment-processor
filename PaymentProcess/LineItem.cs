@@ -25,18 +25,26 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System.Diagnostics;
+using System.Text;
+
 namespace PaymentProcess
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Diagnostics;
-
     /// <summary>
     /// Line item information
     /// </summary>
     public class LineItem : IInfo
     {
+        /// <summary>
+        /// TraceSwitch PaymentProcess
+        /// </summary>
+        private readonly TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
+
+        /// <summary>
+        /// Line item description
+        /// </summary>
+        private string itemDesc;
+
         /// <summary>
         /// Line item ID
         /// </summary>
@@ -48,9 +56,9 @@ namespace PaymentProcess
         private string itemName;
 
         /// <summary>
-        /// Line item description
+        /// Line item price
         /// </summary>
-        private string itemDesc;
+        private decimal itemPrice;
 
         /// <summary>
         /// Line item quantity
@@ -58,19 +66,9 @@ namespace PaymentProcess
         private decimal quantity;
 
         /// <summary>
-        /// Line item price
-        /// </summary>
-        private decimal itemPrice;
-
-        /// <summary>
         /// Line item taxable
         /// </summary>
         private string taxable;
-
-        /// <summary>
-        /// TraceSwitch PaymentProcess
-        /// </summary>
-        private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
 
         /// <summary>
         /// LineItem CTor
@@ -81,15 +79,16 @@ namespace PaymentProcess
         /// <param name="quantity">line item quantity</param>
         /// <param name="itemPrice">line item price</param>
         /// <param name="taxable">line item taxable</param>
-        public LineItem(string itemId, string itemName, string itemDesc, decimal quantity, decimal itemPrice, bool taxable)
+        public LineItem(string itemId, string itemName, string itemDesc, decimal quantity, decimal itemPrice,
+                        bool taxable)
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "LineItem - CTor (string, string, string, decimal, decimal, bool)");
+            Trace.WriteLineIf(ts.TraceInfo, "LineItem - CTor (string, string, string, decimal, decimal, bool)");
             this.itemId = itemId;
             this.itemName = itemName;
             this.itemDesc = itemDesc;
             this.quantity = quantity;
             this.itemPrice = itemPrice;
-            this.taxable = (taxable == true ? "T" : "F");
+            this.taxable = (taxable ? "T" : "F");
         }
 
         /// <summary>
@@ -97,8 +96,8 @@ namespace PaymentProcess
         /// </summary>
         public string ItemId
         {
-            get { return this.itemId; }
-            set { this.itemId = value; }
+            get { return itemId; }
+            set { itemId = value; }
         }
 
         /// <summary>
@@ -106,8 +105,8 @@ namespace PaymentProcess
         /// </summary>
         public string ItemName
         {
-            get { return this.itemName; }
-            set { this.itemName = value; }
+            get { return itemName; }
+            set { itemName = value; }
         }
 
         /// <summary>
@@ -115,8 +114,8 @@ namespace PaymentProcess
         /// </summary>
         public string ItemDesc
         {
-            get { return this.itemDesc; }
-            set { this.itemDesc = value; }
+            get { return itemDesc; }
+            set { itemDesc = value; }
         }
 
         /// <summary>
@@ -124,8 +123,8 @@ namespace PaymentProcess
         /// </summary>
         public decimal Quantity
         {
-            get { return this.quantity; }
-            set { this.quantity = value; }
+            get { return quantity; }
+            set { quantity = value; }
         }
 
         /// <summary>
@@ -133,8 +132,8 @@ namespace PaymentProcess
         /// </summary>
         public decimal ItemPrice
         {
-            get { return this.itemPrice; }
-            set { this.itemPrice = value; }
+            get { return itemPrice; }
+            set { itemPrice = value; }
         }
 
         /// <summary>
@@ -142,9 +141,11 @@ namespace PaymentProcess
         /// </summary>
         public string Taxable
         {
-            get { return this.taxable; }
-            set { this.taxable = value; }
+            get { return taxable; }
+            set { taxable = value; }
         }
+
+        #region IInfo Members
 
         /// <summary>
         /// Builds the POST string for AuthorizeRequest
@@ -152,20 +153,22 @@ namespace PaymentProcess
         /// <returns>Delimited string for HTTP POST</returns>
         public override string ToString()
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "LineItem - ToString start");
+            Trace.WriteLineIf(ts.TraceInfo, "LineItem - ToString start");
 
-            StringBuilder sb = new StringBuilder();
-            sb.Append("&x_line_item=" + this.itemId);
-            sb.Append("<|>" + this.itemName);
-            sb.Append("<|>" + this.itemDesc);
-            sb.Append("<|>" + this.quantity);
-            sb.Append("<|>" + this.itemPrice);
-            sb.Append("<|>" + this.taxable);
+            var sb = new StringBuilder();
+            sb.Append("&x_line_item=" + itemId);
+            sb.Append("<|>" + itemName);
+            sb.Append("<|>" + itemDesc);
+            sb.Append("<|>" + quantity);
+            sb.Append("<|>" + itemPrice);
+            sb.Append("<|>" + taxable);
 
-            Trace.WriteLineIf(this.ts.TraceInfo, "Stringbuilder value to return: " + sb.ToString());
-            Trace.WriteLineIf(this.ts.TraceInfo, "LineItem - ToString end");
+            Trace.WriteLineIf(ts.TraceInfo, "Stringbuilder value to return: " + sb);
+            Trace.WriteLineIf(ts.TraceInfo, "LineItem - ToString end");
 
             return sb.ToString();
         }
+
+        #endregion
     }
 }

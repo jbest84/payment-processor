@@ -25,27 +25,20 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System.Diagnostics;
+using System.Text;
+
 namespace PaymentProcess
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Diagnostics;
-
     /// <summary>
     /// Base class for FreightItem, TaxItem, and DutyItem.
     /// </summary>
     public abstract class Item : IInfo
     {
         /// <summary>
-        /// Item name information
+        /// TraceSwitch PaymentProcess
         /// </summary>
-        private string itemName;
-
-        /// <summary>
-        /// Item description information
-        /// </summary>
-        private string description;
+        private readonly TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
 
         /// <summary>
         /// Item amount information
@@ -53,9 +46,14 @@ namespace PaymentProcess
         private decimal amount;
 
         /// <summary>
-        /// TraceSwitch PaymentProcess
+        /// Item description information
         /// </summary>
-        private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
+        private string description;
+
+        /// <summary>
+        /// Item name information
+        /// </summary>
+        private string itemName;
 
         /// <summary>
         /// Item constructor (CTor)
@@ -65,8 +63,8 @@ namespace PaymentProcess
         /// <param name="amount">Item amount information</param>
         public Item(string name, string description, decimal amount)
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "Item - CTor (string, string, decimal)");
-            this.itemName = name;
+            Trace.WriteLineIf(ts.TraceInfo, "Item - CTor (string, string, decimal)");
+            itemName = name;
             this.description = description;
             this.amount = amount;
         }
@@ -76,8 +74,8 @@ namespace PaymentProcess
         /// </summary>
         public string ItemName
         {
-            get { return this.itemName; }
-            set { this.itemName = value; }
+            get { return itemName; }
+            set { itemName = value; }
         }
 
         /// <summary>
@@ -85,8 +83,8 @@ namespace PaymentProcess
         /// </summary>
         public string Description
         {
-            get { return this.description; }
-            set { this.description = value; }
+            get { return description; }
+            set { description = value; }
         }
 
         /// <summary>
@@ -94,9 +92,11 @@ namespace PaymentProcess
         /// </summary>
         public decimal Amount
         {
-            get { return this.amount; }
-            set { this.amount = value; }
+            get { return amount; }
+            set { amount = value; }
         }
+
+        #region IInfo Members
 
         /// <summary>
         /// Builds the Item POST string
@@ -104,17 +104,19 @@ namespace PaymentProcess
         /// <returns>Delimited string for HTTP POST</returns>
         public override string ToString()
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "Item - ToString start");
+            Trace.WriteLineIf(ts.TraceInfo, "Item - ToString start");
 
-            StringBuilder sb = new StringBuilder();
-            sb.Append(this.itemName);
-            sb.Append("<|>" + this.description);
-            sb.Append("<|>" + this.amount);
+            var sb = new StringBuilder();
+            sb.Append(itemName);
+            sb.Append("<|>" + description);
+            sb.Append("<|>" + amount);
 
-            Trace.WriteLineIf(this.ts.TraceInfo, "Stringbuilder value to return: " + sb.ToString());
-            Trace.WriteLineIf(this.ts.TraceInfo, "Item - ToString end");
+            Trace.WriteLineIf(ts.TraceInfo, "Stringbuilder value to return: " + sb);
+            Trace.WriteLineIf(ts.TraceInfo, "Item - ToString end");
 
             return sb.ToString();
         }
+
+        #endregion
     }
 }

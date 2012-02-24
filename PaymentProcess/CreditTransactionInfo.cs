@@ -25,13 +25,12 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
+using System.Text;
+
 namespace PaymentProcess
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Diagnostics;
-
     /// <summary>
     /// Holds credit card transaction information
     /// </summary>
@@ -40,13 +39,19 @@ namespace PaymentProcess
         /// <summary>
         /// TraceSwitch PaymentProcess
         /// </summary>
-        private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
+        private readonly TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
 
         #region Required
+
         /// <summary>
-        /// API version
+        /// Transaction amount
         /// </summary>
-        private string version;
+        private decimal amount;
+
+        /// <summary>
+        /// Authorization code
+        /// </summary>
+        private string authCode;
 
         /// <summary>
         /// Credit card number
@@ -69,17 +74,24 @@ namespace PaymentProcess
         private string ttype;
 
         /// <summary>
-        /// Authorization code
+        /// API version
         /// </summary>
-        private string authCode;
+        private string version;
 
-        /// <summary>
-        /// Transaction amount
-        /// </summary>
-        private decimal amount = 0;
         #endregion
 
         #region Optional
+
+        /// <summary>
+        /// Credit card code
+        /// </summary>
+        private string cardCode;
+
+        /// <summary>
+        /// Dupiclate window
+        /// </summary>
+        private int duplicateWindow = 120;
+
         /// <summary>
         /// Transaction method
         /// </summary>
@@ -91,19 +103,10 @@ namespace PaymentProcess
         private string recurringBilling;
 
         /// <summary>
-        /// Credit card code
-        /// </summary>
-        private string cardCode;
-
-        /// <summary>
         /// Test request
         /// </summary>
         private string testRequest;
 
-        /// <summary>
-        /// Dupiclate window
-        /// </summary>
-        private int duplicateWindow = 120;
         #endregion
 
         /// <summary>
@@ -116,25 +119,27 @@ namespace PaymentProcess
         /// <param name="trans_id">transaction id</param>
         /// <param name="ttype">transaction type</param>
         /// <param name="auth_code">authorization code</param>
-        public CreditTransactionInfo(string version, decimal amount, string card_num, string exp_date, string trans_id, string ttype, string auth_code) : base(version, amount, "CC")
+        public CreditTransactionInfo(string version, decimal amount, string card_num, string exp_date, string trans_id,
+                                     string ttype, string auth_code) : base(version, amount, "CC")
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "CreditTransactionInfo CTor (string, decimal, string, string, string, string)");
+            Trace.WriteLineIf(ts.TraceInfo,
+                              "CreditTransactionInfo CTor (string, decimal, string, string, string, string)");
             this.version = version;
             this.amount = amount;
-            this.cardNum = card_num;
-            this.expDate = exp_date;
+            cardNum = card_num;
+            expDate = exp_date;
 
             // Conditional
-            this.transId = trans_id;
+            transId = trans_id;
             this.ttype = ttype;
 
             // Conditional
-            this.authCode = auth_code;
+            authCode = auth_code;
 
-            this.method = "CC";
-            this.recurringBilling = "FALSE";
-            this.cardCode = "";
-            this.testRequest = "TRUE";
+            method = "CC";
+            recurringBilling = "FALSE";
+            cardCode = "";
+            testRequest = "TRUE";
         }
 
         #region Properties
@@ -144,8 +149,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Version
         {
-            get { return this.version; }
-            set { this.version = value; }
+            get { return version; }
+            set { version = value; }
         }
 
         /// <summary>
@@ -153,8 +158,8 @@ namespace PaymentProcess
         /// </summary>
         public decimal X_Amount
         {
-            get { return this.amount; }
-            set { this.amount = value; }
+            get { return amount; }
+            set { amount = value; }
         }
 
         /// <summary>
@@ -162,8 +167,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Type
         {
-            get { return this.ttype; }
-            set { this.ttype = value; }
+            get { return ttype; }
+            set { ttype = value; }
         }
 
         /// <summary>
@@ -171,8 +176,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Method
         {
-            get { return this.method; }
-            set { this.method = value; }
+            get { return method; }
+            set { method = value; }
         }
 
         /// <summary>
@@ -180,8 +185,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Recurring_Billing
         {
-            get { return this.recurringBilling; }
-            set { this.recurringBilling = value; }
+            get { return recurringBilling; }
+            set { recurringBilling = value; }
         }
 
         /// <summary>
@@ -189,8 +194,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Card_Num
         {
-            get { return this.cardNum; }
-            set { this.cardNum = value; }
+            get { return cardNum; }
+            set { cardNum = value; }
         }
 
         /// <summary>
@@ -198,8 +203,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Exp_Date
         {
-            get { return this.expDate; }
-            set { this.expDate = value; }
+            get { return expDate; }
+            set { expDate = value; }
         }
 
         /// <summary>
@@ -207,8 +212,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Card_Code
         {
-            get { return this.cardCode; }
-            set { this.cardCode = value; }
+            get { return cardCode; }
+            set { cardCode = value; }
         }
 
         /// <summary>
@@ -216,8 +221,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Trans_Id
         {
-            get { return this.transId; }
-            set { this.transId = value; }
+            get { return transId; }
+            set { transId = value; }
         }
 
         /// <summary>
@@ -225,11 +230,13 @@ namespace PaymentProcess
         /// </summary>
         public string X_Auth_Code
         {
-            get { return this.authCode; }
-            set { this.authCode = value; }
+            get { return authCode; }
+            set { authCode = value; }
         }
 
         #endregion
+
+        #region IInfo Members
 
         /// <summary>
         /// Builds the POST string for the AuthorizeRequest
@@ -237,33 +244,35 @@ namespace PaymentProcess
         /// <returns>see summary</returns>
         public override string ToString()
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "CreditTransactionInfo - ToString start");
+            Trace.WriteLineIf(ts.TraceInfo, "CreditTransactionInfo - ToString start");
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append(base.ToString());
-            sb.Append("&x_type=" + this.ttype);
-            sb.Append("&x_card_num=" + this.cardNum);
-            sb.Append("&x_exp_date=" + this.expDate);
+            sb.Append("&x_type=" + ttype);
+            sb.Append("&x_card_num=" + cardNum);
+            sb.Append("&x_exp_date=" + expDate);
 
-            if (!String.IsNullOrEmpty(this.cardCode))
+            if (!String.IsNullOrEmpty(cardCode))
             {
-                sb.Append("&x_card_code=" + this.cardCode);
+                sb.Append("&x_card_code=" + cardCode);
             }
 
-            if (!String.IsNullOrEmpty(this.transId))
+            if (!String.IsNullOrEmpty(transId))
             {
-                sb.Append("&x_trans_id=" + this.transId);
+                sb.Append("&x_trans_id=" + transId);
             }
 
-            if (!String.IsNullOrEmpty(this.authCode))
+            if (!String.IsNullOrEmpty(authCode))
             {
-                sb.Append("&x_auth_code=" + this.authCode);
+                sb.Append("&x_auth_code=" + authCode);
             }
 
-            Trace.WriteLineIf(this.ts.TraceInfo, "\tStringbuilder value to return: " + sb.ToString());
-            Trace.WriteLineIf(this.ts.TraceInfo, "CreditTransactionInfo - ToString end");
+            Trace.WriteLineIf(ts.TraceInfo, "\tStringbuilder value to return: " + sb);
+            Trace.WriteLineIf(ts.TraceInfo, "CreditTransactionInfo - ToString end");
 
             return sb.ToString();
         }
+
+        #endregion
     }
 }

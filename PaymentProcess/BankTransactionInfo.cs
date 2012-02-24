@@ -25,13 +25,11 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System.Diagnostics;
+using System.Text;
+
 namespace PaymentProcess
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Diagnostics;
-
     /// <summary>
     /// Bank transaction info for ECHECK transactions.
     /// </summary>
@@ -40,18 +38,23 @@ namespace PaymentProcess
         /// <summary>
         /// TraceSwitch PaymentProcess
         /// </summary>
-        private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
+        private readonly TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
 
         /// <summary>
         /// ABA code for this bank transactions
         /// </summary>
-        private int abaCode = 0;
+        private int abaCode;
+
+        /// <summary>
+        /// Account name
+        /// </summary>
+        private string acctName;
 
         /// <summary>
         /// Account number
         /// </summary>
-        private int acctNum = 0;
-        
+        private int acctNum;
+
         /// <summary>
         /// Account type
         /// </summary>
@@ -61,16 +64,6 @@ namespace PaymentProcess
         /// Bank name for this transaction
         /// </summary>
         private string bankName;
-
-        /// <summary>
-        /// Account name
-        /// </summary>
-        private string acctName;
-
-        /// <summary>
-        /// ECHECK type
-        /// </summary>
-        private string echeckType;
 
         // Not used
         ////private string _check_number;
@@ -85,17 +78,19 @@ namespace PaymentProcess
         /// <param name="acct_type">Account type</param>
         /// <param name="bank_name">Bank name for this transaction</param>
         /// <param name="acct_name">Account name</param>
-        public BankTransactionInfo(string version, decimal amount, int aba_code, int acct_num, string acct_type, string bank_name, string acct_name)
+        public BankTransactionInfo(string version, decimal amount, int aba_code, int acct_num, string acct_type,
+                                   string bank_name, string acct_name)
             : base(version, amount, "ECHECK")
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "BankTransactionInfo CTor (string, decimal, int, int, string, string, string)");
-            this.X_Recurring_Billing = "FALSE";
-            this.abaCode = aba_code;
-            this.acctNum = acct_num;
-            this.echeckType = XEcheckTypes.WEB;
-            this.acctType = acct_type;
-            this.bankName = bank_name;
-            this.acctName = acct_name;
+            Trace.WriteLineIf(ts.TraceInfo,
+                              "BankTransactionInfo CTor (string, decimal, int, int, string, string, string)");
+            X_Recurring_Billing = "FALSE";
+            abaCode = aba_code;
+            acctNum = acct_num;
+            X_Echeck_Type = XEcheckTypes.WEB;
+            acctType = acct_type;
+            bankName = bank_name;
+            acctName = acct_name;
         }
 
         /// <summary>
@@ -103,8 +98,8 @@ namespace PaymentProcess
         /// </summary>
         public int X_Bank_Aba_Code
         {
-            get { return this.abaCode; }
-            set { this.abaCode = value; }
+            get { return abaCode; }
+            set { abaCode = value; }
         }
 
         /// <summary>
@@ -112,26 +107,22 @@ namespace PaymentProcess
         /// </summary>
         public int X_Bank_Acct_Num
         {
-            get { return this.acctNum; }
-            set { this.acctNum = value; }
+            get { return acctNum; }
+            set { acctNum = value; }
         }
 
         /// <summary>
         /// Gets or sets the echeck type
         /// </summary>
-        public string X_Echeck_Type
-        {
-            get { return this.echeckType; }
-            set { this.echeckType = value; }
-        }
+        public string X_Echeck_Type { get; set; }
 
         /// <summary>
         /// Gets or sets the bank account name
         /// </summary>
         public string X_Bank_Acct_Name
         {
-            get { return this.acctName; }
-            set { this.acctName = value; }
+            get { return acctName; }
+            set { acctName = value; }
         }
 
         /// <summary>
@@ -139,8 +130,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Bank_Name
         {
-            get { return this.bankName; }
-            set { this.bankName = value; }
+            get { return bankName; }
+            set { bankName = value; }
         }
 
         /// <summary>
@@ -148,9 +139,11 @@ namespace PaymentProcess
         /// </summary>
         public string X_Bank_Acct_Type
         {
-            get { return this.acctType; }
-            set { this.acctType = value; }
+            get { return acctType; }
+            set { acctType = value; }
         }
+
+        #region IInfo Members
 
         /// <summary>
         /// Returns the POST string for this bank transaction.
@@ -158,41 +151,43 @@ namespace PaymentProcess
         /// <returns>See summary</returns>
         public override string ToString()
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "BankTransactionInfo - ToString start");
-            StringBuilder sb = new StringBuilder();
+            Trace.WriteLineIf(ts.TraceInfo, "BankTransactionInfo - ToString start");
+            var sb = new StringBuilder();
             sb.Append(base.ToString());
 
-            if (this.abaCode > 0)
+            if (abaCode > 0)
             {
-                sb.Append("&x_bank_aba_code=" + this.abaCode.ToString("000000000"));
+                sb.Append("&x_bank_aba_code=" + abaCode.ToString("000000000"));
             }
 
-            if (this.acctNum > 0)
+            if (acctNum > 0)
             {
-                sb.Append("&x_bank_acct_num=" + this.acctNum);
+                sb.Append("&x_bank_acct_num=" + acctNum);
             }
 
-            if (!string.IsNullOrEmpty(this.acctType))
+            if (!string.IsNullOrEmpty(acctType))
             {
-                sb.Append("&x_bank_acct_type=" + this.acctType);
+                sb.Append("&x_bank_acct_type=" + acctType);
             }
 
-            if (!string.IsNullOrEmpty(this.bankName))
+            if (!string.IsNullOrEmpty(bankName))
             {
-                sb.Append("&x_bank_name=" + this.bankName);
+                sb.Append("&x_bank_name=" + bankName);
             }
 
-            if (!string.IsNullOrEmpty(this.acctName))
+            if (!string.IsNullOrEmpty(acctName))
             {
-                sb.Append("&x_bank_acct_name=" + this.acctName);
+                sb.Append("&x_bank_acct_name=" + acctName);
             }
 
             sb.Append("&x_echeck_type=" + XEcheckTypes.WEB);
 
-            Trace.WriteLineIf(this.ts.TraceInfo, "\tStringbuilder value to return: " + sb.ToString());
-            Trace.WriteLineIf(this.ts.TraceInfo, "BankTransactionInfo - ToString end");
+            Trace.WriteLineIf(ts.TraceInfo, "\tStringbuilder value to return: " + sb);
+            Trace.WriteLineIf(ts.TraceInfo, "BankTransactionInfo - ToString end");
 
             return sb.ToString();
         }
+
+        #endregion
     }
 }

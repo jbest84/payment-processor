@@ -25,27 +25,26 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text;
+
 namespace PaymentProcess
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Diagnostics;
-
     /// <summary>
     /// Itemized order information
     /// </summary>
     public class ItemizedOrderInfo : IInfo
     {
         /// <summary>
+        /// TraceSwitch PaymentProcess
+        /// </summary>
+        private readonly TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
+
+        /// <summary>
         /// List of line items
         /// </summary>
         private List<LineItem> lineItems;
-
-        /// <summary>
-        /// TraceSwitch PaymentProcess
-        /// </summary>
-        private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
 
         /// <summary>
         /// ItemizedOrderInfo CTor
@@ -53,7 +52,7 @@ namespace PaymentProcess
         /// <param name="lineItems">List collection of LineItems</param>
         public ItemizedOrderInfo(List<LineItem> lineItems)
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "ItemizedOrderInfo - CTor (List<LineItem>)");
+            Trace.WriteLineIf(ts.TraceInfo, "ItemizedOrderInfo - CTor (List<LineItem>)");
             this.lineItems = lineItems;
         }
 
@@ -62,9 +61,11 @@ namespace PaymentProcess
         /// </summary>
         public List<LineItem> LineItems
         {
-            get { return this.lineItems; }
-            set { this.lineItems = value; }
+            get { return lineItems; }
+            set { lineItems = value; }
         }
+
+        #region IInfo Members
 
         /// <summary>
         /// Builds the POST string for AuthorizeRequest
@@ -72,18 +73,20 @@ namespace PaymentProcess
         /// <returns>Delimited string for HTTP POST</returns>
         public override string ToString()
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "ItemizedOrderInfo - ToString start");
+            Trace.WriteLineIf(ts.TraceInfo, "ItemizedOrderInfo - ToString start");
 
-            StringBuilder sb = new StringBuilder();
-            foreach (LineItem li in this.lineItems)
+            var sb = new StringBuilder();
+            foreach (LineItem li in lineItems)
             {
-                sb.Append("&x_line_item=" + li.ToString());
+                sb.Append("&x_line_item=" + li);
             }
 
-            Trace.WriteLineIf(this.ts.TraceInfo, "Stringbuilder value to return: " + sb.ToString());
-            Trace.WriteLineIf(this.ts.TraceInfo, "ItemizedOrderInfo - ToString end");
+            Trace.WriteLineIf(ts.TraceInfo, "Stringbuilder value to return: " + sb);
+            Trace.WriteLineIf(ts.TraceInfo, "ItemizedOrderInfo - ToString end");
 
             return sb.ToString();
         }
+
+        #endregion
     }
 }

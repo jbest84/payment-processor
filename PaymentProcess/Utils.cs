@@ -27,10 +27,6 @@
 
 namespace PaymentProcess
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-
     /// <summary>
     /// Response code
     /// </summary>
@@ -63,6 +59,16 @@ namespace PaymentProcess
     public struct ResponseReason
     {
         /// <summary>
+        /// Empty indicator
+        /// </summary>
+        public bool IsEmpty;
+
+        /// <summary>
+        /// Response notes
+        /// </summary>
+        public string Notes;
+
+        /// <summary>
         /// Response code
         /// </summary>
         public int ResponseCode;
@@ -78,16 +84,6 @@ namespace PaymentProcess
         public string ResponseReasonText;
 
         /// <summary>
-        /// Response notes
-        /// </summary>
-        public string Notes;
-
-        /// <summary>
-        /// Empty indicator
-        /// </summary>
-        public bool IsEmpty;
-
-        /// <summary>
         /// ResponseReason struct CTor
         /// </summary>
         /// <param name="response_code">Response code</param>
@@ -96,11 +92,11 @@ namespace PaymentProcess
         /// <param name="notes_">Response notes</param>
         public ResponseReason(int response_code, int reasonCode, string reasonText, string notes_)
         {
-            this.ResponseCode = response_code;
-            this.ResponseReasonCode = reasonCode;
-            this.ResponseReasonText = reasonText;
-            this.Notes = notes_;
-            this.IsEmpty = false;
+            ResponseCode = response_code;
+            ResponseReasonCode = reasonCode;
+            ResponseReasonText = reasonText;
+            Notes = notes_;
+            IsEmpty = false;
         }
 
         /// <summary>
@@ -109,11 +105,11 @@ namespace PaymentProcess
         /// <param name="empty">Indicates that this response is empty</param>
         public ResponseReason(bool empty)
         {
-            this.ResponseCode = 0;
-            this.ResponseReasonCode = 0;
-            this.ResponseReasonText = null;
-            this.Notes = null;
-            this.IsEmpty = empty;
+            ResponseCode = 0;
+            ResponseReasonCode = 0;
+            ResponseReasonText = null;
+            Notes = null;
+            IsEmpty = empty;
         }
     }
 }
