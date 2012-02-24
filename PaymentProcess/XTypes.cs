@@ -27,10 +27,6 @@
 
 namespace PaymentProcess
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-
     /// <summary>
     /// Transaction types
     /// </summary>
@@ -55,7 +51,7 @@ namespace PaymentProcess
         /// Credit type
         /// </summary>
         private static string credit = "CREDIT";
-        
+
         /// <summary>
         /// Prior type
         /// </summary>

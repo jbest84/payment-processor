@@ -25,13 +25,10 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System.Diagnostics;
+
 namespace PaymentProcess
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Diagnostics;
-
     /// <summary>
     /// Freight item information
     /// </summary>
@@ -40,7 +37,7 @@ namespace PaymentProcess
         /// <summary>
         /// TraceSwitch PaymentProcess
         /// </summary>
-        private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
+        private readonly TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
 
         /// <summary>
         /// FreightItem CTor
@@ -50,7 +47,7 @@ namespace PaymentProcess
         /// <param name="amount">Freight item amount</param>
         public FreightItem(string name, string description, decimal amount) : base(name, description, amount)
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "FreightItem - CTor (string, string, decimal)");
+            Trace.WriteLineIf(ts.TraceInfo, "FreightItem - CTor (string, string, decimal)");
         }
     }
 }

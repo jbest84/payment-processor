@@ -27,10 +27,6 @@
 
 namespace PaymentProcess
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-
     /// <summary>
     /// Holds ECHECK types
     /// </summary>

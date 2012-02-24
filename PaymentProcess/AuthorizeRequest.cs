@@ -25,43 +25,43 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Net;
+using System.Text;
+
 namespace PaymentProcess
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Net;
-    using System.IO;
-    using System.Diagnostics;
-
     /// <summary>
     /// Communicates with Authorize.NET by sending HTTP POST strings
     /// </summary>
     public class AuthorizeRequest
     {
         /// <summary>
-        /// Default URL to send HTTP POST to (TEST)
+        /// Info class container
         /// </summary>
-        private string url = "https://test.authorize.net/gateway/transact.dll";
+        private readonly List<IInfo> info;
 
         /// <summary>
         /// TraceSwitch PaymentProcess
         /// </summary>
-        private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
+        private readonly TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
 
         /// <summary>
-        /// Info class container
+        /// Default URL to send HTTP POST to (TEST)
         /// </summary>
-        private List<IInfo> info = null;
+        private readonly string url = "https://test.authorize.net/gateway/transact.dll";
 
         public AuthorizeRequest(string url, params IInfo[] args)
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "AuthorizeRequest - CTor");
+            Trace.WriteLineIf(ts.TraceInfo, "AuthorizeRequest - CTor");
             this.url = url;
-            this.info = new List<IInfo>();
+            info = new List<IInfo>();
             foreach (IInfo i in args)
             {
-                this.info.Add(i);
+                info.Add(i);
             }
         }
 
@@ -71,40 +71,40 @@ namespace PaymentProcess
         /// <returns>Returns an AuthorizeResponse class instance</returns>
         public AuthorizeResponse SendRequest()
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "AuthorizeRequest - SendRequest start");
+            Trace.WriteLineIf(ts.TraceInfo, "AuthorizeRequest - SendRequest start");
             try
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(this.url);
+                var request = (HttpWebRequest) WebRequest.Create(url);
                 request.Method = "POST";
-                string post = this.BuildPostString();
+                string post = BuildPostString();
                 request.ContentLength = post.Length;
                 request.ContentType = "application/x-www-form-urlencoded";
 
-                Trace.WriteLineIf(this.ts.TraceInfo, "\tAuthorizeRequest - post string: " + post);
-                StreamWriter writer = new StreamWriter(request.GetRequestStream());
+                Trace.WriteLineIf(ts.TraceInfo, "\tAuthorizeRequest - post string: " + post);
+                var writer = new StreamWriter(request.GetRequestStream());
                 writer.Write(post);
                 writer.Close();
 
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                var response = (HttpWebResponse) request.GetResponse();
+                using (var reader = new StreamReader(response.GetResponseStream()))
                 {
                     string results = reader.ReadToEnd();
                     reader.Close();
 
-                    Trace.WriteLineIf(this.ts.TraceInfo, "\tAuthorizeRequest - raw results: " + results);
+                    Trace.WriteLineIf(ts.TraceInfo, "\tAuthorizeRequest - raw results: " + results);
                     return new AuthorizeResponse(results);
                 }
             }
             catch (Exception ex)
             {
-                Trace.WriteLineIf(this.ts.TraceError, "\tException was thrown.");
-                Trace.WriteLineIf(this.ts.TraceError, "\t" + ex.Message);
-                Trace.WriteLineIf(this.ts.TraceError, "\t" + ex.StackTrace);
+                Trace.WriteLineIf(ts.TraceError, "\tException was thrown.");
+                Trace.WriteLineIf(ts.TraceError, "\t" + ex.Message);
+                Trace.WriteLineIf(ts.TraceError, "\t" + ex.StackTrace);
                 throw ex;
             }
             finally
             {
-                Trace.WriteLineIf(this.ts.TraceInfo, "AuthorizeRequest - SendRequest end");
+                Trace.WriteLineIf(ts.TraceInfo, "AuthorizeRequest - SendRequest end");
             }
         }
 
@@ -114,12 +114,12 @@ namespace PaymentProcess
         /// <returns>Returns the full POST string as requird by Authorize.NET</returns>
         private string BuildPostString()
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "AuthorizeRequest - BuildPostString start");
-            StringBuilder sb = new StringBuilder();
+            Trace.WriteLineIf(ts.TraceInfo, "AuthorizeRequest - BuildPostString start");
+            var sb = new StringBuilder();
 
-            foreach (IInfo i in this.info)
+            foreach (IInfo i in info)
             {
-                Trace.WriteLineIf(this.ts.TraceInfo, "\tBuildPostString - IInfo");
+                Trace.WriteLineIf(ts.TraceInfo, "\tBuildPostString - IInfo");
                 sb.Append(i.ToString());
             }
 
@@ -128,7 +128,7 @@ namespace PaymentProcess
             sb.Append("&x_delim_char=|");
             sb.Append("&x_relay_response=FALSE");
 
-            Trace.WriteLineIf(this.ts.TraceInfo, "AuthorizeRequest - BuildPostString end");
+            Trace.WriteLineIf(ts.TraceInfo, "AuthorizeRequest - BuildPostString end");
 
             return sb.ToString();
         }

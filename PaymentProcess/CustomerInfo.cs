@@ -25,32 +25,20 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System.Diagnostics;
+using System.Text;
+
 namespace PaymentProcess
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Diagnostics;
-
     /// <summary>
     /// Holds customer information for AuthorizeRequest
     /// </summary>
     public class CustomerInfo : IInfo
     {
         /// <summary>
-        /// Customer first name
+        /// TraceSwitch PaymentProcess
         /// </summary>
-        private string firstName;
-
-        /// <summary>
-        /// Customer last name
-        /// </summary>
-        private string lastName;
-
-        /// <summary>
-        /// Customer company
-        /// </summary>
-        private string company;
+        private readonly TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
 
         /// <summary>
         /// Customer address
@@ -63,34 +51,14 @@ namespace PaymentProcess
         private string city;
 
         /// <summary>
-        /// Customer state
+        /// Customer company
         /// </summary>
-        private string state;
-
-        /// <summary>
-        /// Customer zip code
-        /// </summary>
-        private string zip;
+        private string company;
 
         /// <summary>
         /// Customer country
         /// </summary>
         private string country;
-
-        /// <summary>
-        /// Customer phone number
-        /// </summary>
-        private string phone;
-
-        /// <summary>
-        /// Customer fax number
-        /// </summary>
-        private string fax;
-
-        /// <summary>
-        /// Customer email address
-        /// </summary>
-        private string email;
 
         /// <summary>
         /// Customer ID
@@ -103,9 +71,39 @@ namespace PaymentProcess
         private string customerIp;
 
         /// <summary>
-        /// TraceSwitch PaymentProcess
+        /// Customer email address
         /// </summary>
-        private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
+        private string email;
+
+        /// <summary>
+        /// Customer fax number
+        /// </summary>
+        private string fax;
+
+        /// <summary>
+        /// Customer first name
+        /// </summary>
+        private string firstName;
+
+        /// <summary>
+        /// Customer last name
+        /// </summary>
+        private string lastName;
+
+        /// <summary>
+        /// Customer phone number
+        /// </summary>
+        private string phone;
+
+        /// <summary>
+        /// Customer state
+        /// </summary>
+        private string state;
+
+        /// <summary>
+        /// Customer zip code
+        /// </summary>
+        private string zip;
 
         /// <summary>
         /// CustomerInfo CTor
@@ -123,11 +121,13 @@ namespace PaymentProcess
         /// <param name="email">Customer email</param>
         /// <param name="customer_id">Customer ID</param>
         /// <param name="customer_ip">Customer IP address</param>
-        public CustomerInfo(string first_name, string last_name, string company, string address, string city, string state, string zip, string country, string phone, string fax, string email, string customer_id, string customer_ip)
+        public CustomerInfo(string first_name, string last_name, string company, string address, string city,
+                            string state, string zip, string country, string phone, string fax, string email,
+                            string customer_id, string customer_ip)
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "CustomerInfo - CTor (string * 13)");
-            this.firstName = first_name;
-            this.lastName = last_name;
+            Trace.WriteLineIf(ts.TraceInfo, "CustomerInfo - CTor (string * 13)");
+            firstName = first_name;
+            lastName = last_name;
             this.company = company;
             this.address = address;
             this.city = city;
@@ -137,8 +137,8 @@ namespace PaymentProcess
             this.phone = phone;
             this.fax = fax;
             this.email = email;
-            this.customerId = customer_id;
-            this.customerIp = customer_ip;
+            customerId = customer_id;
+            customerIp = customer_ip;
         }
 
         /// <summary>
@@ -146,8 +146,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_First_Name
         {
-            get { return this.firstName; }
-            set { this.firstName = value; }
+            get { return firstName; }
+            set { firstName = value; }
         }
 
         /// <summary>
@@ -155,8 +155,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Last_Name
         {
-            get { return this.lastName; }
-            set { this.lastName = value; }
+            get { return lastName; }
+            set { lastName = value; }
         }
 
         /// <summary>
@@ -164,8 +164,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Company
         {
-            get { return this.company; }
-            set { this.company = value; }
+            get { return company; }
+            set { company = value; }
         }
 
         /// <summary>
@@ -173,8 +173,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Address
         {
-            get { return this.address; }
-            set { this.address = value; }
+            get { return address; }
+            set { address = value; }
         }
 
         /// <summary>
@@ -182,8 +182,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_City
         {
-            get { return this.city; }
-            set { this.city = value; }
+            get { return city; }
+            set { city = value; }
         }
 
         /// <summary>
@@ -191,8 +191,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_State
         {
-            get { return this.state; }
-            set { this.state = value; }
+            get { return state; }
+            set { state = value; }
         }
 
         /// <summary>
@@ -200,8 +200,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Zip
         {
-            get { return this.zip; }
-            set { this.zip = value; }
+            get { return zip; }
+            set { zip = value; }
         }
 
         /// <summary>
@@ -209,8 +209,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Country
         {
-            get { return this.country; }
-            set { this.country = value; }
+            get { return country; }
+            set { country = value; }
         }
 
         /// <summary>
@@ -218,8 +218,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Phone
         {
-            get { return this.phone; }
-            set { this.phone = value; }
+            get { return phone; }
+            set { phone = value; }
         }
 
         /// <summary>
@@ -227,8 +227,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Fax
         {
-            get { return this.fax; }
-            set { this.fax = value; }
+            get { return fax; }
+            set { fax = value; }
         }
 
         /// <summary>
@@ -236,8 +236,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Email
         {
-            get { return this.email; }
-            set { this.email = value; }
+            get { return email; }
+            set { email = value; }
         }
 
         /// <summary>
@@ -245,8 +245,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Cust_Id
         {
-            get { return this.customerId; }
-            set { this.customerId = value; }
+            get { return customerId; }
+            set { customerId = value; }
         }
 
         /// <summary>
@@ -254,9 +254,11 @@ namespace PaymentProcess
         /// </summary>
         public string X_Customer_Ip
         {
-            get { return this.customerIp; }
-            set { this.customerIp = value; }
+            get { return customerIp; }
+            set { customerIp = value; }
         }
+
+        #region IInfo Members
 
         /// <summary>
         /// Builds the POST string for the AuthorizeRequest
@@ -264,27 +266,29 @@ namespace PaymentProcess
         /// <returns>see summary</returns>
         public override string ToString()
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "CustomerInfo - ToString start");
+            Trace.WriteLineIf(ts.TraceInfo, "CustomerInfo - ToString start");
 
-            StringBuilder sb = new StringBuilder();
-            sb.Append("&x_first_name=" + this.firstName);
-            sb.Append("&x_last_name=" + this.lastName);
-            sb.Append("&x_company=" + this.company);
-            sb.Append("&x_address=" + this.address);
-            sb.Append("&x_city=" + this.city);
-            sb.Append("&x_state=" + this.state);
-            sb.Append("&x_zip=" + this.zip);
-            sb.Append("&x_country=" + this.country);
-            sb.Append("&x_phone=" + this.phone);
-            sb.Append("&x_fax=" + this.fax);
-            sb.Append("&x_email=" + this.email);
-            sb.Append("&x_cust_id=" + this.customerId);
-            sb.Append("&x_customer_ip=" + this.customerIp);
+            var sb = new StringBuilder();
+            sb.Append("&x_first_name=" + firstName);
+            sb.Append("&x_last_name=" + lastName);
+            sb.Append("&x_company=" + company);
+            sb.Append("&x_address=" + address);
+            sb.Append("&x_city=" + city);
+            sb.Append("&x_state=" + state);
+            sb.Append("&x_zip=" + zip);
+            sb.Append("&x_country=" + country);
+            sb.Append("&x_phone=" + phone);
+            sb.Append("&x_fax=" + fax);
+            sb.Append("&x_email=" + email);
+            sb.Append("&x_cust_id=" + customerId);
+            sb.Append("&x_customer_ip=" + customerIp);
 
-            Trace.WriteLineIf(this.ts.TraceInfo, "\tStringbuilder value to return: " + sb.ToString());
-            Trace.WriteLineIf(this.ts.TraceInfo, "CustomerInfo - ToString start");
+            Trace.WriteLineIf(ts.TraceInfo, "\tStringbuilder value to return: " + sb);
+            Trace.WriteLineIf(ts.TraceInfo, "CustomerInfo - ToString start");
 
             return sb.ToString();
         }
+
+        #endregion
     }
 }

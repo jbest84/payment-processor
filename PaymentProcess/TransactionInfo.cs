@@ -25,13 +25,12 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
+using System.Text;
+
 namespace PaymentProcess
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Diagnostics;
-
     /// <summary>
     /// Base class for transactions
     /// </summary>
@@ -40,17 +39,17 @@ namespace PaymentProcess
         /// <summary>
         /// TraceSwitch PaymentProcess
         /// </summary>
-        private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
-
-        /// <summary>
-        /// Required API version number
-        /// </summary>
-        private string version;
+        private readonly TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
 
         /// <summary>
         /// Required transaction amount
         /// </summary>
-        private decimal amount = 0;
+        private decimal amount;
+
+        /// <summary>
+        /// Delay time to prevent duplicate transactions
+        /// </summary>
+        private int duplicateWindow = 120;
 
         /// <summary>
         /// Transaction method
@@ -68,9 +67,9 @@ namespace PaymentProcess
         private string testRequest;
 
         /// <summary>
-        /// Delay time to prevent duplicate transactions
+        /// Required API version number
         /// </summary>
-        private int duplicateWindow = 120;
+        private string version;
 
         /// <summary>
         /// TransactionInfo CTor
@@ -80,7 +79,7 @@ namespace PaymentProcess
         /// <param name="method">Transaction method</param>
         public TransactionInfo(string version, decimal amount, string method)
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "TransactionInfo - CTor (string, decimal, string)");
+            Trace.WriteLineIf(ts.TraceInfo, "TransactionInfo - CTor (string, decimal, string)");
             this.version = version;
             this.amount = amount;
 
@@ -92,10 +91,10 @@ namespace PaymentProcess
             {
                 this.method = "CC"; // Default
             }
-            
+
             // Default values
-            this.recurringBilling = "FALSE";
-            this.testRequest = "TRUE";
+            recurringBilling = "FALSE";
+            testRequest = "TRUE";
         }
 
         /// <summary>
@@ -103,8 +102,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Version
         {
-            get { return this.version; }
-            set { this.version = value; }
+            get { return version; }
+            set { version = value; }
         }
 
         /// <summary>
@@ -112,8 +111,8 @@ namespace PaymentProcess
         /// </summary>
         public decimal X_Amount
         {
-            get { return this.amount; }
-            set { this.amount = value; }
+            get { return amount; }
+            set { amount = value; }
         }
 
         /// <summary>
@@ -121,8 +120,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Method
         {
-            get { return this.method; }
-            set { this.method = value; }
+            get { return method; }
+            set { method = value; }
         }
 
         /// <summary>
@@ -130,8 +129,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Recurring_Billing
         {
-            get { return this.recurringBilling; }
-            set { this.recurringBilling = value; }
+            get { return recurringBilling; }
+            set { recurringBilling = value; }
         }
 
         /// <summary>
@@ -139,8 +138,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Test_Request
         {
-            get { return this.testRequest; }
-            set { this.testRequest = value; }
+            get { return testRequest; }
+            set { testRequest = value; }
         }
 
         /// <summary>
@@ -148,9 +147,11 @@ namespace PaymentProcess
         /// </summary>
         public int X_Duplicate_Window
         {
-            get { return this.duplicateWindow; }
-            set { this.duplicateWindow = value; }
+            get { return duplicateWindow; }
+            set { duplicateWindow = value; }
         }
+
+        #region IInfo Members
 
         /// <summary>
         /// Builds the HTTP POST string for AuthorizeRequest
@@ -158,28 +159,30 @@ namespace PaymentProcess
         /// <returns>see summary</returns>
         public override string ToString()
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "TransactionInfo - ToString start");
+            Trace.WriteLineIf(ts.TraceInfo, "TransactionInfo - ToString start");
 
-            StringBuilder sb = new StringBuilder();
-            sb.Append("&x_version=" + this.version);
-            sb.Append("&x_method=" + this.method);
-            sb.Append("&x_recurring_billing=" + this.recurringBilling);
-            sb.Append("&x_amount=" + this.amount);
+            var sb = new StringBuilder();
+            sb.Append("&x_version=" + version);
+            sb.Append("&x_method=" + method);
+            sb.Append("&x_recurring_billing=" + recurringBilling);
+            sb.Append("&x_amount=" + amount);
 
-            if (!String.IsNullOrEmpty(this.testRequest))
+            if (!String.IsNullOrEmpty(testRequest))
             {
-                sb.Append("&x_test_request=" + this.testRequest);
+                sb.Append("&x_test_request=" + testRequest);
             }
 
-            if (this.duplicateWindow > 0)
+            if (duplicateWindow > 0)
             {
-                sb.Append("&x_duplicate_window=" + this.duplicateWindow);
+                sb.Append("&x_duplicate_window=" + duplicateWindow);
             }
 
-            Trace.WriteLineIf(this.ts.TraceInfo, "\tStringbuilder value to return: " + sb.ToString());
-            Trace.WriteLineIf(this.ts.TraceInfo, "TransactionInfo - ToString end");
+            Trace.WriteLineIf(ts.TraceInfo, "\tStringbuilder value to return: " + sb);
+            Trace.WriteLineIf(ts.TraceInfo, "TransactionInfo - ToString end");
 
             return sb.ToString();
         }
+
+        #endregion
     }
 }

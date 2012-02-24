@@ -25,13 +25,10 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System.Diagnostics;
+
 namespace PaymentProcess
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Diagnostics;
-
     /// <summary>
     /// Captures the response from the Authorize.NET request.
     /// </summary>
@@ -40,34 +37,24 @@ namespace PaymentProcess
         /// <summary>
         /// Delimited text from the request (needs to be parsed). Seperated by '|'.
         /// </summary>
-        private string results = null;
+        private readonly string results;
 
         /// <summary>
         /// TraceSwitch PaymentProcess
         /// </summary>
-        private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
+        private readonly TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
 
         #region Split Fields
 
         /// <summary>
-        /// Response code
+        /// Company address
         /// </summary>
-        private string responseCode = "";
+        private string address = "";
 
         /// <summary>
-        /// Response subcode
+        /// Transaction amount
         /// </summary>
-        private string responseSubCode = "";
-
-        /// <summary>
-        /// Response reason code
-        /// </summary>
-        private string responseReasonCode = "";
-
-        /// <summary>
-        /// Response reason text
-        /// </summary>
-        private string responseReasonText = "";
+        private string amount = "";
 
         /// <summary>
         /// Authorization code
@@ -80,59 +67,14 @@ namespace PaymentProcess
         private string avsResponse = "";
 
         /// <summary>
-        /// Transaction ID
+        /// Card code response
         /// </summary>
-        private string transactionId = "";
+        private string cardCodeResponse = "";
 
         /// <summary>
-        /// Invoice number
+        /// Cardholder authentication verification response
         /// </summary>
-        private string invoiceNumber = "";
-
-        /// <summary>
-        /// Transaction description
-        /// </summary>
-        private string description = "";
-
-        /// <summary>
-        /// Transaction amount
-        /// </summary>
-        private string amount = "";
-
-        /// <summary>
-        /// Transaction method
-        /// </summary>
-        private string method = "";
-
-        /// <summary>
-        /// Transaction type
-        /// </summary>
-        private string transactionType = "";
-
-        /// <summary>
-        /// Customer ID
-        /// </summary>
-        private string customerId = "";
-
-        /// <summary>
-        /// First name
-        /// </summary>
-        private string firstName = "";
-
-        /// <summary>
-        /// Last name information
-        /// </summary>
-        private string lastName = "";
-
-        /// <summary>
-        /// Company name
-        /// </summary>
-        private string company = "";
-
-        /// <summary>
-        /// Company address
-        /// </summary>
-        private string address = "";
+        private string cardholderAuthenticationVerificationResponse = "";
 
         /// <summary>
         /// Company city
@@ -140,14 +82,9 @@ namespace PaymentProcess
         private string city = "";
 
         /// <summary>
-        /// Company state
+        /// Company name
         /// </summary>
-        private string state = "";
-
-        /// <summary>
-        /// Company zipcode
-        /// </summary>
-        private string zip = "";
+        private string company = "";
 
         /// <summary>
         /// Company country
@@ -155,14 +92,19 @@ namespace PaymentProcess
         private string country = "";
 
         /// <summary>
-        /// Company phone
+        /// Customer ID
         /// </summary>
-        private string phone = "";
+        private string customerId = "";
 
         /// <summary>
-        /// Company fax
+        /// Transaction description
         /// </summary>
-        private string fax = "";
+        private string description = "";
+
+        /// <summary>
+        /// Duty amount
+        /// </summary>
+        private string duty = "";
 
         /// <summary>
         /// Company email
@@ -170,19 +112,69 @@ namespace PaymentProcess
         private string email = "";
 
         /// <summary>
-        /// Ship to first name
+        /// Company fax
         /// </summary>
-        private string shipToFirstName = "";
+        private string fax = "";
 
         /// <summary>
-        /// Ship to last name
+        /// First name
         /// </summary>
-        private string shipToLastName = "";
+        private string firstName = "";
 
         /// <summary>
-        /// Ship to company
+        /// Freight amount
         /// </summary>
-        private string shipToCompany = "";
+        private string freight = "";
+
+        /// <summary>
+        /// MD5 hash for this transaction
+        /// </summary>
+        private string hash = "";
+
+        /// <summary>
+        /// Invoice number
+        /// </summary>
+        private string invoiceNumber = "";
+
+        /// <summary>
+        /// Last name information
+        /// </summary>
+        private string lastName = "";
+
+        /// <summary>
+        /// Transaction method
+        /// </summary>
+        private string method = "";
+
+        /// <summary>
+        /// Company phone
+        /// </summary>
+        private string phone = "";
+
+        /// <summary>
+        /// Purchase order number
+        /// </summary>
+        private string purchaseOrderNumber = "";
+
+        /// <summary>
+        /// Response code
+        /// </summary>
+        private string responseCode = "";
+
+        /// <summary>
+        /// Response reason code
+        /// </summary>
+        private string responseReasonCode = "";
+
+        /// <summary>
+        /// Response reason text
+        /// </summary>
+        private string responseReasonText = "";
+
+        /// <summary>
+        /// Response subcode
+        /// </summary>
+        private string responseSubCode = "";
 
         /// <summary>
         /// Ship to address
@@ -195,6 +187,26 @@ namespace PaymentProcess
         private string shipToCity = "";
 
         /// <summary>
+        /// Ship to company
+        /// </summary>
+        private string shipToCompany = "";
+
+        /// <summary>
+        /// Ship to country
+        /// </summary>
+        private string shipToCountry = "";
+
+        /// <summary>
+        /// Ship to first name
+        /// </summary>
+        private string shipToFirstName = "";
+
+        /// <summary>
+        /// Ship to last name
+        /// </summary>
+        private string shipToLastName = "";
+
+        /// <summary>
         /// Ship to state
         /// </summary>
         private string shipToState = "";
@@ -205,9 +217,9 @@ namespace PaymentProcess
         private string shipToZip = "";
 
         /// <summary>
-        /// Ship to country
+        /// Company state
         /// </summary>
-        private string shipToCountry = "";
+        private string state = "";
 
         /// <summary>
         /// Tax amount
@@ -215,39 +227,25 @@ namespace PaymentProcess
         private string tax = "";
 
         /// <summary>
-        /// Duty amount
-        /// </summary>
-        private string duty = "";
-
-        /// <summary>
-        /// Freight amount
-        /// </summary>
-        private string freight = "";
-
-        /// <summary>
         /// Tax exempt
         /// </summary>
         private string taxExempt = "";
 
         /// <summary>
-        /// Purchase order number
+        /// Transaction ID
         /// </summary>
-        private string purchaseOrderNumber = "";
+        private string transactionId = "";
 
         /// <summary>
-        /// MD5 hash for this transaction
+        /// Transaction type
         /// </summary>
-        private string hash = "";
+        private string transactionType = "";
 
         /// <summary>
-        /// Card code response
+        /// Company zipcode
         /// </summary>
-        private string cardCodeResponse = "";
+        private string zip = "";
 
-        /// <summary>
-        /// Cardholder authentication verification response
-        /// </summary>
-        private string cardholderAuthenticationVerificationResponse = "";
         #endregion
 
         /// <summary>
@@ -256,9 +254,9 @@ namespace PaymentProcess
         /// <param name="results">Raw result from the AuthorizeRequest</param>
         public AuthorizeResponse(string results)
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "AuthorizeResponse CTor (string)");
+            Trace.WriteLineIf(ts.TraceInfo, "AuthorizeResponse CTor (string)");
             this.results = results;
-            this.Parse();
+            Parse();
         }
 
         /// <summary>
@@ -273,7 +271,7 @@ namespace PaymentProcess
         /// </summary>
         public string ResponseCode
         {
-            get { return this.responseCode; }
+            get { return responseCode; }
         }
 
         /// <summary>
@@ -281,7 +279,7 @@ namespace PaymentProcess
         /// </summary>
         public string ResponseSubcode
         {
-            get { return this.responseSubCode; }
+            get { return responseSubCode; }
         }
 
         /// <summary>
@@ -289,7 +287,7 @@ namespace PaymentProcess
         /// </summary>
         public string ResponseReasonCode
         {
-            get { return this.responseReasonCode; }
+            get { return responseReasonCode; }
         }
 
         /// <summary>
@@ -297,7 +295,7 @@ namespace PaymentProcess
         /// </summary>
         public string ResponseReasonText
         {
-            get { return this.responseReasonText; }
+            get { return responseReasonText; }
         }
 
         /// <summary>
@@ -305,7 +303,7 @@ namespace PaymentProcess
         /// </summary>
         public string AuthorizationCode
         {
-            get { return this.authorizationCode; }
+            get { return authorizationCode; }
         }
 
         /// <summary>
@@ -313,7 +311,7 @@ namespace PaymentProcess
         /// </summary>
         public string AvsResponse
         {
-            get { return this.avsResponse; }
+            get { return avsResponse; }
         }
 
         /// <summary>
@@ -321,7 +319,7 @@ namespace PaymentProcess
         /// </summary>
         public string TransactionId
         {
-            get { return this.transactionId; }
+            get { return transactionId; }
         }
 
         /// <summary>
@@ -329,7 +327,7 @@ namespace PaymentProcess
         /// </summary>
         public string InvoiceNumber
         {
-            get { return this.invoiceNumber; }
+            get { return invoiceNumber; }
         }
 
         /// <summary>
@@ -337,7 +335,7 @@ namespace PaymentProcess
         /// </summary>
         public string Description
         {
-            get { return this.description; }
+            get { return description; }
         }
 
         /// <summary>
@@ -345,7 +343,7 @@ namespace PaymentProcess
         /// </summary>
         public string Amount
         {
-            get { return this.amount; }
+            get { return amount; }
         }
 
         /// <summary>
@@ -353,7 +351,7 @@ namespace PaymentProcess
         /// </summary>
         public string Method
         {
-            get { return this.method; }
+            get { return method; }
         }
 
         /// <summary>
@@ -361,7 +359,7 @@ namespace PaymentProcess
         /// </summary>
         public string TransactionType
         {
-            get { return this.transactionType; }
+            get { return transactionType; }
         }
 
         /// <summary>
@@ -369,7 +367,7 @@ namespace PaymentProcess
         /// </summary>
         public string CustomerId
         {
-            get { return this.customerId; }
+            get { return customerId; }
         }
 
         /// <summary>
@@ -377,7 +375,7 @@ namespace PaymentProcess
         /// </summary>
         public string FirstName
         {
-            get { return this.firstName; }
+            get { return firstName; }
         }
 
         /// <summary>
@@ -385,7 +383,7 @@ namespace PaymentProcess
         /// </summary>
         public string LastName
         {
-            get { return this.lastName; }
+            get { return lastName; }
         }
 
         /// <summary>
@@ -393,7 +391,7 @@ namespace PaymentProcess
         /// </summary>
         public string Company
         {
-            get { return this.company; }
+            get { return company; }
         }
 
         /// <summary>
@@ -401,7 +399,7 @@ namespace PaymentProcess
         /// </summary>
         public string Address
         {
-            get { return this.address; }
+            get { return address; }
         }
 
         /// <summary>
@@ -409,7 +407,7 @@ namespace PaymentProcess
         /// </summary>
         public string City
         {
-            get { return this.city; }
+            get { return city; }
         }
 
         /// <summary>
@@ -417,7 +415,7 @@ namespace PaymentProcess
         /// </summary>
         public string State
         {
-            get { return this.state; }
+            get { return state; }
         }
 
         /// <summary>
@@ -425,7 +423,7 @@ namespace PaymentProcess
         /// </summary>
         public string Zip
         {
-            get { return this.zip; }
+            get { return zip; }
         }
 
         /// <summary>
@@ -433,7 +431,7 @@ namespace PaymentProcess
         /// </summary>
         public string Country
         {
-            get { return this.country; }
+            get { return country; }
         }
 
         /// <summary>
@@ -441,7 +439,7 @@ namespace PaymentProcess
         /// </summary>
         public string Phone
         {
-            get { return this.phone; }
+            get { return phone; }
         }
 
         /// <summary>
@@ -449,7 +447,7 @@ namespace PaymentProcess
         /// </summary>
         public string Fax
         {
-            get { return this.fax; }
+            get { return fax; }
         }
 
         /// <summary>
@@ -457,7 +455,7 @@ namespace PaymentProcess
         /// </summary>
         public string Email
         {
-            get { return this.email; }
+            get { return email; }
         }
 
         /// <summary>
@@ -465,7 +463,7 @@ namespace PaymentProcess
         /// </summary>
         public string ShipToFirstName
         {
-            get { return this.shipToFirstName; }
+            get { return shipToFirstName; }
         }
 
         /// <summary>
@@ -473,7 +471,7 @@ namespace PaymentProcess
         /// </summary>
         public string ShipToLastName
         {
-            get { return this.shipToLastName; }
+            get { return shipToLastName; }
         }
 
         /// <summary>
@@ -481,7 +479,7 @@ namespace PaymentProcess
         /// </summary>
         public string ShipToCompany
         {
-            get { return this.shipToCompany; }
+            get { return shipToCompany; }
         }
 
         /// <summary>
@@ -489,7 +487,7 @@ namespace PaymentProcess
         /// </summary>
         public string ShipToAddress
         {
-            get { return this.shipToAddress; }
+            get { return shipToAddress; }
         }
 
         /// <summary>
@@ -497,7 +495,7 @@ namespace PaymentProcess
         /// </summary>
         public string ShipToCity
         {
-            get { return this.shipToCity; }
+            get { return shipToCity; }
         }
 
         /// <summary>
@@ -505,7 +503,7 @@ namespace PaymentProcess
         /// </summary>
         public string ShipToState
         {
-            get { return this.shipToState; }
+            get { return shipToState; }
         }
 
         /// <summary>
@@ -513,7 +511,7 @@ namespace PaymentProcess
         /// </summary>
         public string ShipToZip
         {
-            get { return this.shipToZip; }
+            get { return shipToZip; }
         }
 
         /// <summary>
@@ -521,7 +519,7 @@ namespace PaymentProcess
         /// </summary>
         public string ShipToCountry
         {
-            get { return this.shipToCountry; }
+            get { return shipToCountry; }
         }
 
         /// <summary>
@@ -529,7 +527,7 @@ namespace PaymentProcess
         /// </summary>
         public string Tax
         {
-            get { return this.tax; }
+            get { return tax; }
         }
 
         /// <summary>
@@ -537,7 +535,7 @@ namespace PaymentProcess
         /// </summary>
         public string Duty
         {
-            get { return this.duty; }
+            get { return duty; }
         }
 
         /// <summary>
@@ -545,7 +543,7 @@ namespace PaymentProcess
         /// </summary>
         public string Freight
         {
-            get { return this.freight; }
+            get { return freight; }
         }
 
         /// <summary>
@@ -553,7 +551,7 @@ namespace PaymentProcess
         /// </summary>
         public string TaxExempt
         {
-            get { return this.taxExempt; }
+            get { return taxExempt; }
         }
 
         /// <summary>
@@ -561,7 +559,7 @@ namespace PaymentProcess
         /// </summary>
         public string PurchaseOrderNumber
         {
-            get { return this.purchaseOrderNumber; }
+            get { return purchaseOrderNumber; }
         }
 
         /// <summary>
@@ -569,7 +567,7 @@ namespace PaymentProcess
         /// </summary>
         public string Md5Hash
         {
-            get { return this.hash; }
+            get { return hash; }
         }
 
         /// <summary>
@@ -577,7 +575,7 @@ namespace PaymentProcess
         /// </summary>
         public string CardCodeResponse
         {
-            get { return this.cardCodeResponse; }
+            get { return cardCodeResponse; }
         }
 
         /// <summary>
@@ -585,7 +583,7 @@ namespace PaymentProcess
         /// </summary>
         public string CardholderAuthenticationVerificationResponse
         {
-            get { return this.cardholderAuthenticationVerificationResponse; }
+            get { return cardholderAuthenticationVerificationResponse; }
         }
 
         /// <summary>
@@ -593,54 +591,54 @@ namespace PaymentProcess
         /// </summary>
         private void Parse()
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "AuthorizeResponse - Parse start");
-            string[] p = this.results.Split('|');
-            Trace.WriteLineIf(this.ts.TraceInfo, "\tAuthorizeResponse - Length of split: " + p.Length);
+            Trace.WriteLineIf(ts.TraceInfo, "AuthorizeResponse - Parse start");
+            string[] p = results.Split('|');
+            Trace.WriteLineIf(ts.TraceInfo, "\tAuthorizeResponse - Length of split: " + p.Length);
             if (p.Length >= 39)
             {
-                this.responseCode = p[0];
-                this.responseSubCode = p[1];
-                this.responseReasonCode = p[2];
-                this.responseReasonText = p[3];
-                this.authorizationCode = p[4];
-                this.avsResponse = p[5];
-                this.transactionId = p[6];
-                this.invoiceNumber = p[7];
-                this.description = p[8];
-                this.amount = p[9];
-                this.method = p[10];
-                this.transactionType = p[11];
-                this.customerId = p[12];
-                this.firstName = p[13];
-                this.lastName = p[14];
-                this.company = p[15];
-                this.address = p[16];
-                this.city = p[17];
-                this.state = p[18];
-                this.zip = p[19];
-                this.country = p[20];
-                this.phone = p[21];
-                this.fax = p[22];
-                this.email = p[23];
-                this.shipToFirstName = p[24];
-                this.shipToLastName = p[25];
-                this.shipToCompany = p[26];
-                this.shipToAddress = p[27];
-                this.shipToCity = p[28];
-                this.shipToState = p[29];
-                this.shipToZip = p[30];
-                this.shipToCountry = p[31];
-                this.tax = p[32];
-                this.duty = p[33];
-                this.freight = p[34];
-                this.taxExempt = p[35];
-                this.purchaseOrderNumber = p[36];
-                this.hash = p[37];
-                this.cardCodeResponse = p[38];
-                this.cardholderAuthenticationVerificationResponse = p[39];
+                responseCode = p[0];
+                responseSubCode = p[1];
+                responseReasonCode = p[2];
+                responseReasonText = p[3];
+                authorizationCode = p[4];
+                avsResponse = p[5];
+                transactionId = p[6];
+                invoiceNumber = p[7];
+                description = p[8];
+                amount = p[9];
+                method = p[10];
+                transactionType = p[11];
+                customerId = p[12];
+                firstName = p[13];
+                lastName = p[14];
+                company = p[15];
+                address = p[16];
+                city = p[17];
+                state = p[18];
+                zip = p[19];
+                country = p[20];
+                phone = p[21];
+                fax = p[22];
+                email = p[23];
+                shipToFirstName = p[24];
+                shipToLastName = p[25];
+                shipToCompany = p[26];
+                shipToAddress = p[27];
+                shipToCity = p[28];
+                shipToState = p[29];
+                shipToZip = p[30];
+                shipToCountry = p[31];
+                tax = p[32];
+                duty = p[33];
+                freight = p[34];
+                taxExempt = p[35];
+                purchaseOrderNumber = p[36];
+                hash = p[37];
+                cardCodeResponse = p[38];
+                cardholderAuthenticationVerificationResponse = p[39];
             }
 
-            Trace.WriteLineIf(this.ts.TraceInfo, "AuthorizeResponse - Parse end");
+            Trace.WriteLineIf(ts.TraceInfo, "AuthorizeResponse - Parse end");
         }
     }
 }

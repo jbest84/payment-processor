@@ -25,67 +25,66 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
+using System.Text;
+
 namespace PaymentProcess
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Diagnostics;
-
     /// <summary>
     /// Additional shipping information for the request.
     /// </summary>
     public class AdditionalShippingInfo : IInfo
     {
         /// <summary>
-        /// Stringbuilder for the POST string
-        /// </summary>
-        private StringBuilder sb;
-
-        /// <summary>
-        /// TaxItem information
-        /// </summary>
-        private TaxItem tax;
-
-        /// <summary>
-        /// tax amount
-        /// </summary>
-        private decimal taxAmount;
-
-        /// <summary>
-        /// freight information
-        /// </summary>
-        private FreightItem freight;
-
-        /// <summary>
-        /// freight amount
-        /// </summary>
-        private decimal freightAmount;
-
-        /// <summary>
         /// duty information
         /// </summary>
-        private DutyItem duty;
+        private readonly DutyItem duty;
 
         /// <summary>
         /// duty amount
         /// </summary>
-        private decimal dutyAmount;
+        private readonly decimal dutyAmount;
 
         /// <summary>
-        /// tax exempt
+        /// freight information
         /// </summary>
-        private string taxExempt;
+        private readonly FreightItem freight;
+
+        /// <summary>
+        /// freight amount
+        /// </summary>
+        private readonly decimal freightAmount;
 
         /// <summary>
         /// purchase order number
         /// </summary>
-        private string purchaseNum;
+        private readonly string purchaseNum;
+
+        /// <summary>
+        /// Stringbuilder for the POST string
+        /// </summary>
+        private readonly StringBuilder sb;
+
+        /// <summary>
+        /// TaxItem information
+        /// </summary>
+        private readonly TaxItem tax;
+
+        /// <summary>
+        /// tax amount
+        /// </summary>
+        private readonly decimal taxAmount;
+
+        /// <summary>
+        /// tax exempt
+        /// </summary>
+        private readonly string taxExempt;
 
         /// <summary>
         /// TraceSwitch PaymentProcess
         /// </summary>
-        private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
+        private readonly TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
 
         /// <summary>
         /// AdditionalShippingInfo Ctor
@@ -97,28 +96,29 @@ namespace PaymentProcess
         /// <param name="ponumber">purchase order number</param>
         public AdditionalShippingInfo(TaxItem tax, FreightItem freight, DutyItem duty, bool tax_exempt, string ponumber)
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "AdditionalShippingInfo CTor - (TaxItem, FreightItem, DutyItem, bool, string)");
+            Trace.WriteLineIf(ts.TraceInfo,
+                              "AdditionalShippingInfo CTor - (TaxItem, FreightItem, DutyItem, bool, string)");
             this.tax = tax;
             this.freight = freight;
             this.duty = duty;
-            this.taxExempt = (tax_exempt == true ? "T" : "F");
-            this.purchaseNum = ponumber;
+            taxExempt = (tax_exempt ? "T" : "F");
+            purchaseNum = ponumber;
 
             // Build return string
-            this.sb = new StringBuilder();
+            sb = new StringBuilder();
             if (tax != null)
             {
-                this.sb.Append("&x_tax=" + tax.ToString());
+                sb.Append("&x_tax=" + tax);
             }
 
             if (freight != null)
             {
-                this.sb.Append("&x_freight=" + freight.ToString());
+                sb.Append("&x_freight=" + freight);
             }
 
             if (duty != null)
             {
-                this.sb.Append("&x_duty=" + duty.ToString());
+                sb.Append("&x_duty=" + duty);
             }
         }
 
@@ -130,30 +130,31 @@ namespace PaymentProcess
         /// <param name="duty_amount">duty amount</param>
         /// <param name="tax_exempt">tax exempt</param>
         /// <param name="ponumber">purchase order number</param>
-        public AdditionalShippingInfo(decimal tax_amount, decimal freight_amount, decimal duty_amount, bool tax_exempt, string ponumber)
+        public AdditionalShippingInfo(decimal tax_amount, decimal freight_amount, decimal duty_amount, bool tax_exempt,
+                                      string ponumber)
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "AdditionalShippingInfo CTor - (decimal, decimal, decimal, bool, string)");
-            this.taxAmount = tax_amount;
-            this.freightAmount = freight_amount;
-            this.dutyAmount = duty_amount;
-            this.taxExempt = (tax_exempt == true ? "T" : "F");
-            this.purchaseNum = ponumber;
+            Trace.WriteLineIf(ts.TraceInfo, "AdditionalShippingInfo CTor - (decimal, decimal, decimal, bool, string)");
+            taxAmount = tax_amount;
+            freightAmount = freight_amount;
+            dutyAmount = duty_amount;
+            taxExempt = (tax_exempt ? "T" : "F");
+            purchaseNum = ponumber;
 
             // Build return string
-            this.sb = new StringBuilder();
+            sb = new StringBuilder();
             if (tax_amount > 0)
             {
-                this.sb.Append("&x_tax=" + tax_amount);
+                sb.Append("&x_tax=" + tax_amount);
             }
 
             if (freight_amount > 0)
             {
-                this.sb.Append("&x_freight=" + freight_amount);
+                sb.Append("&x_freight=" + freight_amount);
             }
 
             if (duty_amount > 0)
             {
-                this.sb.Append("&x_duty=" + duty_amount);
+                sb.Append("&x_duty=" + duty_amount);
             }
         }
 
@@ -162,7 +163,7 @@ namespace PaymentProcess
         /// </summary>
         public TaxItem X_Tax
         {
-            get { return this.tax; }
+            get { return tax; }
         }
 
         /// <summary>
@@ -170,7 +171,7 @@ namespace PaymentProcess
         /// </summary>
         public decimal X_Tax_Amount
         {
-            get { return this.taxAmount; }
+            get { return taxAmount; }
         }
 
         /// <summary>
@@ -178,7 +179,7 @@ namespace PaymentProcess
         /// </summary>
         public FreightItem X_Freight
         {
-            get { return this.freight; }
+            get { return freight; }
         }
 
         /// <summary>
@@ -186,7 +187,7 @@ namespace PaymentProcess
         /// </summary>
         public decimal X_Freight_Amount
         {
-            get { return this.freightAmount; }
+            get { return freightAmount; }
         }
 
         /// <summary>
@@ -194,7 +195,7 @@ namespace PaymentProcess
         /// </summary>
         public DutyItem X_Duty
         {
-            get { return this.duty; }
+            get { return duty; }
         }
 
         /// <summary>
@@ -202,7 +203,7 @@ namespace PaymentProcess
         /// </summary>
         public decimal X_Duty_Amount
         {
-            get { return this.dutyAmount; }
+            get { return dutyAmount; }
         }
 
         /// <summary>
@@ -210,7 +211,7 @@ namespace PaymentProcess
         /// </summary>
         public string X_Tax_Exempt
         {
-            get { return this.taxExempt; }
+            get { return taxExempt; }
         }
 
         /// <summary>
@@ -218,8 +219,10 @@ namespace PaymentProcess
         /// </summary>
         public string X_PO_Num
         {
-            get { return this.purchaseNum; }
+            get { return purchaseNum; }
         }
+
+        #region IInfo Members
 
         /// <summary>
         /// Returns the POST string for this Info class.
@@ -227,23 +230,25 @@ namespace PaymentProcess
         /// <returns>See summary</returns>
         public override string ToString()
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "AdditionalShippingInfo - ToString start");
+            Trace.WriteLineIf(ts.TraceInfo, "AdditionalShippingInfo - ToString start");
 
             // CTor's build the first part of this string
             // finish the remaining two optional fields.
-            if (!String.IsNullOrEmpty(this.taxExempt))
+            if (!String.IsNullOrEmpty(taxExempt))
             {
-                this.sb.Append("&x_tax_exempt=" + this.taxExempt);
+                sb.Append("&x_tax_exempt=" + taxExempt);
             }
 
-            if (!String.IsNullOrEmpty(this.purchaseNum))
+            if (!String.IsNullOrEmpty(purchaseNum))
             {
-                this.sb.Append("&x_po_num=" + this.purchaseNum);
+                sb.Append("&x_po_num=" + purchaseNum);
             }
 
-            Trace.WriteLineIf(this.ts.TraceInfo, "\tStringbuilder value to return: " + this.sb.ToString());
-            Trace.WriteLineIf(this.ts.TraceInfo, "AdditionalShippingInfo - ToString end");
-            return this.sb.ToString();
+            Trace.WriteLineIf(ts.TraceInfo, "\tStringbuilder value to return: " + sb);
+            Trace.WriteLineIf(ts.TraceInfo, "AdditionalShippingInfo - ToString end");
+            return sb.ToString();
         }
+
+        #endregion
     }
 }

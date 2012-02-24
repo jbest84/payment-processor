@@ -25,32 +25,20 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System.Diagnostics;
+using System.Text;
+
 namespace PaymentProcess
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Diagnostics;
-
     /// <summary>
     /// Shipping information
     /// </summary>
     public class ShippingInfo : IInfo
     {
         /// <summary>
-        /// Ship to first name
+        /// TraceSwitch PaymentProcess
         /// </summary>
-        private string firstName;
-
-        /// <summary>
-        /// Ship to last name
-        /// </summary>
-        private string lastName;
-
-        /// <summary>
-        /// Ship to company
-        /// </summary>
-        private string company;
+        private readonly TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
 
         /// <summary>
         /// Ship to address
@@ -63,6 +51,26 @@ namespace PaymentProcess
         private string city;
 
         /// <summary>
+        /// Ship to company
+        /// </summary>
+        private string company;
+
+        /// <summary>
+        /// Ship to country
+        /// </summary>
+        private string country;
+
+        /// <summary>
+        /// Ship to first name
+        /// </summary>
+        private string firstName;
+
+        /// <summary>
+        /// Ship to last name
+        /// </summary>
+        private string lastName;
+
+        /// <summary>
         /// Ship to state
         /// </summary>
         private string state;
@@ -71,16 +79,6 @@ namespace PaymentProcess
         /// Ship to zip code
         /// </summary>
         private string zip;
-
-        /// <summary>
-        /// Ship to country
-        /// </summary>
-        private string country;
-
-        /// <summary>
-        /// TraceSwitch PaymentProcess
-        /// </summary>
-        private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
 
         /// <summary>
         /// ShippingInfo CTor
@@ -93,18 +91,20 @@ namespace PaymentProcess
         /// <param name="ship_to_state">Ship to state</param>
         /// <param name="ship_to_zip">Ship to zip code</param>
         /// <param name="ship_to_country">Ship to country</param>
-        public ShippingInfo(string ship_to_first_name, string ship_to_last_name, string ship_to_company, string ship_to_address, string ship_to_city, string ship_to_state, string ship_to_zip, string ship_to_country)
+        public ShippingInfo(string ship_to_first_name, string ship_to_last_name, string ship_to_company,
+                            string ship_to_address, string ship_to_city, string ship_to_state, string ship_to_zip,
+                            string ship_to_country)
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "ShippingInfo - CTor (string * 8)");
+            Trace.WriteLineIf(ts.TraceInfo, "ShippingInfo - CTor (string * 8)");
 
-            this.firstName = ship_to_first_name;
-            this.lastName = ship_to_last_name;
-            this.company = ship_to_company;
-            this.address = ship_to_address;
-            this.city = ship_to_city;
-            this.state = ship_to_state;
-            this.zip = ship_to_zip;
-            this.country = ship_to_country;
+            firstName = ship_to_first_name;
+            lastName = ship_to_last_name;
+            company = ship_to_company;
+            address = ship_to_address;
+            city = ship_to_city;
+            state = ship_to_state;
+            zip = ship_to_zip;
+            country = ship_to_country;
         }
 
         /// <summary>
@@ -112,8 +112,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Ship_To_First_Name
         {
-            get { return this.firstName; }
-            set { this.firstName = value; }
+            get { return firstName; }
+            set { firstName = value; }
         }
 
         /// <summary>
@@ -121,8 +121,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Ship_To_Last_Name
         {
-            get { return this.lastName; }
-            set { this.lastName = value; }
+            get { return lastName; }
+            set { lastName = value; }
         }
 
         /// <summary>
@@ -130,8 +130,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Ship_To_Company
         {
-            get { return this.company; }
-            set { this.company = value; }
+            get { return company; }
+            set { company = value; }
         }
 
         /// <summary>
@@ -139,8 +139,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Ship_To_Address
         {
-            get { return this.address; }
-            set { this.address = value; }
+            get { return address; }
+            set { address = value; }
         }
 
         /// <summary>
@@ -148,8 +148,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Ship_To_City
         {
-            get { return this.city; }
-            set { this.city = value; }
+            get { return city; }
+            set { city = value; }
         }
 
         /// <summary>
@@ -157,8 +157,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Ship_To_State
         {
-            get { return this.state; }
-            set { this.state = value; }
+            get { return state; }
+            set { state = value; }
         }
 
         /// <summary>
@@ -166,8 +166,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Ship_To_Zip
         {
-            get { return this.zip; }
-            set { this.zip = value; }
+            get { return zip; }
+            set { zip = value; }
         }
 
         /// <summary>
@@ -175,9 +175,11 @@ namespace PaymentProcess
         /// </summary>
         public string X_Ship_To_Country
         {
-            get { return this.country; }
-            set { this.country = value; }
+            get { return country; }
+            set { country = value; }
         }
+
+        #region IInfo Members
 
         /// <summary>
         /// Builds the HTTP POST string for AuthorizeRequest
@@ -185,23 +187,25 @@ namespace PaymentProcess
         /// <returns>see summary</returns>
         public override string ToString()
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "ShippingInfo - ToString start");
+            Trace.WriteLineIf(ts.TraceInfo, "ShippingInfo - ToString start");
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
-            sb.Append("&x_ship_to_first_name=" + this.firstName);
-            sb.Append("&x_ship_to_last_name=" + this.lastName);
-            sb.Append("&x_ship_to_company=" + this.company);
-            sb.Append("&x_ship_to_address=" + this.address);
-            sb.Append("&x_ship_to_city=" + this.city);
-            sb.Append("&x_ship_to_state=" + this.state);
-            sb.Append("&x_ship_to_zip=" + this.zip);
-            sb.Append("&x_ship_to_country=" + this.country);
+            sb.Append("&x_ship_to_first_name=" + firstName);
+            sb.Append("&x_ship_to_last_name=" + lastName);
+            sb.Append("&x_ship_to_company=" + company);
+            sb.Append("&x_ship_to_address=" + address);
+            sb.Append("&x_ship_to_city=" + city);
+            sb.Append("&x_ship_to_state=" + state);
+            sb.Append("&x_ship_to_zip=" + zip);
+            sb.Append("&x_ship_to_country=" + country);
 
-            Trace.WriteLineIf(this.ts.TraceInfo, "Stringbuilder value to return: " + sb.ToString());
-            Trace.WriteLineIf(this.ts.TraceInfo, "ShippingInfo - ToString end");
+            Trace.WriteLineIf(ts.TraceInfo, "Stringbuilder value to return: " + sb);
+            Trace.WriteLineIf(ts.TraceInfo, "ShippingInfo - ToString end");
 
             return sb.ToString();
         }
+
+        #endregion
     }
 }

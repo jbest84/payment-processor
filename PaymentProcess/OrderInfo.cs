@@ -25,22 +25,20 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System.Diagnostics;
+using System.Text;
+
 namespace PaymentProcess
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Diagnostics;
-
     /// <summary>
     /// Order information
     /// </summary>
     public class OrderInfo : IInfo
     {
         /// <summary>
-        /// Order invoice number
+        /// TraceSwitch PaymentProcess
         /// </summary>
-        private string invoiceNum = "";
+        private readonly TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
 
         /// <summary>
         /// Order description
@@ -48,9 +46,9 @@ namespace PaymentProcess
         private string description = "";
 
         /// <summary>
-        /// TraceSwitch PaymentProcess
+        /// Order invoice number
         /// </summary>
-        private TraceSwitch ts = new TraceSwitch("PaymentProcess", "");
+        private string invoiceNum = "";
 
         /// <summary>
         /// OrderInfo CTor
@@ -59,8 +57,8 @@ namespace PaymentProcess
         /// <param name="description">Order description</param>
         public OrderInfo(string invoice_number, string description)
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "OrderInfo - CTor (string, string)");
-            this.invoiceNum = invoice_number;
+            Trace.WriteLineIf(ts.TraceInfo, "OrderInfo - CTor (string, string)");
+            invoiceNum = invoice_number;
             this.description = description;
         }
 
@@ -69,8 +67,8 @@ namespace PaymentProcess
         /// </summary>
         public string X_Invoice_Num
         {
-            get { return this.invoiceNum; }
-            set { this.invoiceNum = value; }
+            get { return invoiceNum; }
+            set { invoiceNum = value; }
         }
 
         /// <summary>
@@ -78,9 +76,11 @@ namespace PaymentProcess
         /// </summary>
         public string X_Description
         {
-            get { return this.description; }
-            set { this.description = value; }
+            get { return description; }
+            set { description = value; }
         }
+
+        #region IInfo Members
 
         /// <summary>
         /// Builds the HTTP POST string for AuthorizeRequest
@@ -88,16 +88,18 @@ namespace PaymentProcess
         /// <returns>see summary</returns>
         public override string ToString()
         {
-            Trace.WriteLineIf(this.ts.TraceInfo, "OrderInfo - ToString start");
+            Trace.WriteLineIf(ts.TraceInfo, "OrderInfo - ToString start");
 
-            StringBuilder sb = new StringBuilder();
-            sb.Append("&x_invoice_num=" + this.invoiceNum);
-            sb.Append("&x_description=" + this.description);
+            var sb = new StringBuilder();
+            sb.Append("&x_invoice_num=" + invoiceNum);
+            sb.Append("&x_description=" + description);
 
-            Trace.WriteLineIf(this.ts.TraceInfo, "Stringbuilder value to return: " + sb.ToString());
-            Trace.WriteLineIf(this.ts.TraceInfo, "OrderInfo - ToString end");
+            Trace.WriteLineIf(ts.TraceInfo, "Stringbuilder value to return: " + sb);
+            Trace.WriteLineIf(ts.TraceInfo, "OrderInfo - ToString end");
 
             return sb.ToString();
         }
+
+        #endregion
     }
 }
