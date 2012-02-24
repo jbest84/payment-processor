@@ -32,9 +32,9 @@ namespace PaymentProcessQuickStart
     using System.Text;
     using PaymentProcess;
 
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             List<IInfo> reqInfo = new List<IInfo>();
 
@@ -47,8 +47,9 @@ namespace PaymentProcessQuickStart
             string TAC_AuthCode = "";
             //bool TEST = false;
 
-	        // new constructor param - TEST - remove if not needed
-            CreditTransactionInfo infCCTrans = new CreditTransactionInfo(version, amount, CCNumber, CCExp, TAC_ID, XTypes.AUTH_CAPTURE, TAC_AuthCode);
+            // new constructor param - TEST - remove if not needed
+            CreditTransactionInfo infCCTrans = new CreditTransactionInfo(version, amount, CCNumber, CCExp, TAC_ID,
+                                                                         XTypes.AUTH_CAPTURE, TAC_AuthCode);
             reqInfo.Add(infCCTrans);
 
             // Merchant
@@ -65,26 +66,23 @@ namespace PaymentProcessQuickStart
             reqInfo.Add(infOrder);
 
             // Customer
-            CustomerInfo infCustomer = new CustomerInfo("John", "Doe", "Pretty Good Company", "Address", "City", "State", "ZIP", "US", "410150620", "fax", "doe@goodcompany.com", "CustomerID", "CustomerIP");
+            CustomerInfo infCustomer = new CustomerInfo("John", "Doe", "Pretty Good Company", "Address", "City", "State",
+                                                        "ZIP", "US", "410150620", "fax", "doe@goodcompany.com",
+                                                        "CustomerID", "CustomerIP");
             reqInfo.Add(infCustomer);
 
             // send request
             AuthorizeRequest request;
             AuthorizeResponse response;
 
-            try
-            {
-                request = new AuthorizeRequest(AuthorizeURL.PRODUCTION_URL, reqInfo.ToArray());
-                response = request.SendRequest();
+            request = new AuthorizeRequest(AuthorizeURL.PRODUCTION_URL, reqInfo.ToArray());
+            response = request.SendRequest();
 
-                Console.WriteLine(string.Format("RespCode '{0}'\nRespSubCode '{1}'\nReasonCode '{2}'\nReasonText '{3}'", response.ResponseCode, response.ResponseSubcode, response.ResponseReasonCode, response.ResponseReasonText));
+            Console.WriteLine(string.Format(
+                "RespCode '{0}'\nRespSubCode '{1}'\nReasonCode '{2}'\nReasonText '{3}'", response.ResponseCode,
+                response.ResponseSubcode, response.ResponseReasonCode, response.ResponseReasonText));
 
-                Console.ReadKey();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            Console.ReadKey();
         }
     }
 }
