@@ -29,7 +29,6 @@ namespace PaymentProcessQuickStart
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
     using PaymentProcess;
 
     internal class Program
