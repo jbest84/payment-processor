@@ -100,7 +100,7 @@ namespace PaymentProcess
                 Trace.WriteLineIf(ts.TraceError, "\tException was thrown.");
                 Trace.WriteLineIf(ts.TraceError, "\t" + ex.Message);
                 Trace.WriteLineIf(ts.TraceError, "\t" + ex.StackTrace);
-                throw ex;
+                throw;
             }
             finally
             {
